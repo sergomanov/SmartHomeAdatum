@@ -1,0 +1,1 @@
+dmesg | grep ttyUSB | grep to

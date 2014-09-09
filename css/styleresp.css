@@ -1,0 +1,365 @@
+/*
+Theme Name: Shaken Grid Free
+Version: 3.1.0
+Description: Another kick-ass theme from the guys at Shaken & Stirred Web
+Author: Shaken & Stirred Web
+Author URI: http://shakenandstirredweb.com/
+*/
+
+/* ----------------------------------------------------
+		1 - Reset
+---------------------------------------------------- */
+
+	html, body, div, span, object, iframe,
+	h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+	abbr, address, cite, code,
+	del, dfn, em, img, ins, kbd, q, samp,
+	small, strong, sub, sup, var,
+	a, b, i,
+	dl, dt, dd, ol, ul, li,
+	fieldset, form, label, legend,
+	input, textarea, button,
+	table, caption, tbody, tfoot, thead, tr, th, td {
+	  background: transparent;
+	  border: 0;
+	  font-size: 100%;
+	  margin: 0;
+	  outline: 0;
+	  padding: 0;
+	  vertical-align: baseline;
+	}
+	
+	body{
+		background:#f7f7f7;
+		font-family:Helvetica, "Helvetica Neue", Arial, sans-serif;
+		font-size:12px;
+	}
+	
+	.clearfix{
+		clear:both;
+	}
+
+
+/* ----------------------------------------------------
+		2 - Typography
+---------------------------------------------------- */
+a, a.more-link p{
+	color:#5096cb;
+}
+#header h1 a,
+.menu li a,
+#page h2,
+#page h3{
+	font-family:'LeagueGothicRegular', Arial, Helvetica, sans-serif;
+}
+
+#header h1 a{
+	font-size: 30px;
+	color:#333;
+	display:block;
+	margin: 10px 0;
+	text-decoration:none;
+	text-shadow:2px 2px 1px rgba(0,0,0,0.13);
+}
+	.wf-active #header h1 a{
+		font-weight:normal;
+		font-size:48px;
+		text-transform:uppercase;
+		letter-spacing:1px;
+		word-spacing:5px;
+		margin:0;
+	}
+	#header h1 a:hover{
+		color:#00657e;
+	}
+	
+#page h2{
+	font-size:30px;
+	letter-spacing:1px;
+	margin-bottom:20px;
+	font-weight:normal;
+	text-transform:uppercase;
+	color:#666;
+	border-bottom:1px solid #eee;
+	text-shadow:1px 1px 2px rgba(0,0,0,0.13);
+	-moz-text-shadow:1px 1px 2px rgba(0,0,0,0.13);
+}
+.box h2{
+	font-size:12px;
+	text-transform:uppercase;
+	color:#777;
+	margin-bottom:5px;
+}
+
+#header h3{
+	font-weight:normal;
+	font-size:12px;
+	text-transform:uppercase;
+	color:#999;
+	margin-top:-5px;
+}
+#page h3{
+	font-size:24px;
+	font-weight:normal;
+	margin-bottom:15px;
+	color:#666;
+	border-bottom:1px solid #eee;
+	text-shadow:1px 1px 2px rgba(0,0,0,0.13);
+	-moz-text-shadow:1px 1px 2px rgba(0,0,0,0.13);
+}
+h4, h5{
+	margin-bottom:15px;
+	color:#eee;
+}
+h4{
+	font-size:18px;
+}
+h5{
+	font-size:16px;
+}
+
+.box p, .box ul{
+	font-size:11px;
+	line-height:16px;
+	color:#777;
+	margin-bottom:10px;
+}
+	.box ul li{
+		margin-bottom:5px;
+		margin-left:5px;
+	}
+#page p{
+	margin-bottom:20px;
+	line-height:18px;
+}
+#footer p{
+	font-size:11px;
+}
+
+ul{
+	margin-left:20px;
+}
+	ul li{
+		margin-bottom:15px;
+	}
+	#sidebar ul{
+		list-style:none;
+		margin-left:0;
+	}
+	.widget, #sidebar ul{
+		margin-bottom:40px;
+	}
+	
+/* ----------------------------------------------------
+		3 - Layout
+---------------------------------------------------- */
+.box, .menu li a, #header h1 a, .navigation a{
+	-webkit-transition: all 200ms linear; /*safari and chrome */
+	-moz-transition: all 200ms linear; /* firefox */
+	-o-transition: all 200ms linear; /* opera */
+	transition: all 200ms linear;
+}
+#grid{
+	padding-left:30px;
+}
+#page{
+	width:950px;
+	margin-left:30px;
+}
+.wrap{
+	width: 100%;
+}
+
+.box{
+	background:#FFF;
+	margin-bottom:10px;
+	padding:10px;
+	width:200px;
+	float:left;
+	-webkit-box-shadow:1px 1px 3px rgba(0,0,0,0.2);
+	-moz-box-shadow:1px 1px 3px rgba(0,0,0,0.2);
+	box-shadow:1px 1px 3px rgba(0,0,0,0.2);
+	overflow:hidden;
+	position:relative;
+}
+
+	.box img{
+		margin-bottom:-2px;
+		z-index:0;
+	}
+	.box:hover{
+		box-shadow:0px 0px 3px rgba(0,0,0,0.5);
+		-moz-box-shadow:0px 0px 3px rgba(0,0,0,0.5);
+		-webkit-box-shadow:0px 0px 3px rgba(0,0,0,0.5);
+	}
+	span.view-large{
+		position:absolute;
+		display:block;
+		background:url(images/bigger.png) no-repeat center rgb(0,0,0);
+		background:url(images/bigger.png) no-repeat center rgba(0,0,0,0.8);
+		width:40px;
+		height:40px;
+		border-radius:0 0 0 10px;
+		-webkit-border-radius:0 0 0 10px;
+		-moz-border-radius:0 0 0 10px;
+		top:10px;
+		right:10px;
+		z-index:10;
+	}
+#header{
+	margin-bottom:30px;
+	background:#FFF;
+	padding:20px 20px 20px 40px;
+	border-bottom:1px solid rgba(0,0,0,0.15);
+}
+	#site-info, .menu{
+		display:inline;
+		float:left;
+	}
+	.menu{
+		list-style:none;
+		padding:0;
+		margin:20px 0 0 40px;
+	}
+		.menu li{
+			display:inline;
+			float:left;
+			font-size:22px;
+			text-transform:uppercase;
+			margin-left:40px;
+			position:relative;
+		}
+		.menu li:first-child{margin-left:0;}
+			.menu li a{
+				text-decoration:none;
+				color:#999;
+				border-bottom:1px solid #FFF;
+			}
+			.menu li a:hover, .menu li.current-menu-item a{
+				color:#333;
+				border-bottom:1px solid #999;
+				text-shadow:2px 2px 1px rgba(0,0,0,0.13);
+				-moz-text-shadow:2px 2px 1px rgba(0,0,0,0.13);
+			}
+		.menu li ul{
+			margin:0;
+			position:absolute;
+			top:25px;
+			left:-10px;
+			width:150px;
+			background:#FFF;
+			padding:10px;
+			z-index:20;
+			display:none;
+			-webkit-box-shadow:1px 1px 3px rgba(0,0,0,0.2);
+			-moz-box-shadow:1px 1px 3px rgba(0,0,0,0.2);
+			box-shadow:1px 1px 3px rgba(0,0,0,0.2);
+		}
+		.menu li:hover ul{
+			display:block;
+		}
+			.menu li ul li a{
+				font-size:12px;
+				font-family:Arial, Helvetica, sans-serif;
+			}
+			.menu li ul li{
+				display:block;
+				clear:both;
+				margin:0 0 10px 0;
+				line-height:12px;
+			}
+	.wide-col{
+		padding:20px;
+		background:#FFF;
+		float:left;
+		clear:right;
+		width:550px;
+		-webkit-box-shadow:1px 1px 3px rgba(0,0,0,0.2);
+		-moz-box-shadow:1px 1px 3px rgba(0,0,0,0.2);
+		box-shadow:1px 1px 3px rgba(0,0,0,0.2);
+	}
+	.narrow-col{
+		padding:20px;
+		background:#FFF;
+		float:right;
+		clear:right;
+		width:300px;
+		-webkit-box-shadow:1px 1px 3px rgba(0,0,0,0.2);
+		-moz-box-shadow:1px 1px 3px rgba(0,0,0,0.2);
+		box-shadow:1px 1px 3px rgba(0,0,0,0.2);
+	}
+			
+#footer{
+	margin-top:40px;
+	background:#FFF;
+	padding:20px 20px 20px 40px;
+	border-top:1px solid rgba(0,0,0,0.15);
+	border-bottom:1px solid rgba(0,0,0,0.15);
+	color:#999;
+	clear:both;
+}
+
+
+/* ----------------------------------------------------
+		4 - Wordpress
+---------------------------------------------------- */
+.alignleft{
+		float:left;
+		clear:left;
+	}
+	img.alignleft, .alignleft img{
+		margin:0 25px 5px 0;
+	}
+.alignright{
+	float:right;
+	clear:right;
+}
+	img.alignright, .alignright img{
+		margin:0 0 5px 25px;
+	}
+.aligncenter{
+	margin:auto;
+	clear:both;
+	text-align:center;
+}
+.alignnone{
+	float:none;
+	clear:both;
+	display:block;
+}
+
+.navigation{
+	margin-left:10px;
+	overflow:hidden;
+}
+	.navigation a{
+		background:#FFF;
+		border:1px solid rgba(0,0,0,0.1);
+		border-radius:10px;
+		padding:5px 10px;
+		display:inline-block;
+		text-decoration:none;
+	}
+		.navigation a:hover{
+			background:#5096cb;
+			color:#FFF;
+		}
+	#nav-above{
+		margin-bottom:20px;
+	}
+	#nav-below{
+		margin-top:20px;
+	}
+	.nav-previous, .nav-next{
+		float:left;
+		clear:right;
+		margin-right:20px;
+	}
+#s, input, textarea { /* This keeps the search inputs in line */
+	border:1px solid #999;
+	padding:3px 5px;
+}
+	#s{width:60%;}
+#searchform{
+	margin-bottom:40px;
+}
