@@ -285,7 +285,7 @@ var editor = K.editor({					allowFileManager : true				});
 		
 <br>
 
-		<input type="hidden" id="img" name="img" value="/css/load.png" style="width:100%" /> 
+		<input type="text" id="img" name="img" value="./css/load.png" style="width:100%" /> 
 		
 		<div style=" text-align: center;  ">
 		<img src="" alt="Фоновое изображение" id="imgscr"  style="max-height:200px; max-width:200px;">
@@ -298,7 +298,18 @@ var editor = K.editor({					allowFileManager : true				});
  document.getElementById('imgscr').src = document.getElementById('img').value;
  
  }, 1000); </script>
-
+ 
+ 
+ 
+<div id="i_imgoff" style="display: none">	
+ 	<input type="text" id="imgoff" name="imgoff" value="./css/load.png" style="width:100%" /> 
+		
+		<div style=" text-align: center;  ">
+		<img src="" alt="Фоновое изображение" id="imgscroff"  style="max-height:200px; max-width:200px;">
+		</div>
+		
+<script> setInterval(function(){ document.getElementById('imgscroff').src = document.getElementById('imgoff').value; }, 1000); </script>
+</div>
 
  
  
@@ -502,6 +513,7 @@ while($row = $r->fetch_assoc())
 		<a href="javascript:void(0)," class="popbutton" onclick="getText<?php echo $row['id'];?>(); ">
 					   <?php if($row['type']==3){ echo '<i class="icon-handdrag"></i>';}  ?>
 					   <?php if($row['type']==9){ echo '<i class="icon-foldertree warning"></i>';}  ?>
+					   <?php if($row['type']==10){ echo '<i class="icon-placealt"></i>';}  ?>
 	</a>  
 </td>
 
@@ -542,8 +554,11 @@ while($row = $r->fetch_assoc())
 			$('#conditions').val('<?php	echo $row['conditions']; ?>').change();
 			document.getElementById('id').value = '<?php	echo $row['id']; ?>';
 			document.getElementById('img').value = '<?php	echo $row['img']; ?>';
+			document.getElementById('imgoff').value = '<?php	echo $row['imgon']; ?>';
 			document.getElementById('name').value = '<?php	echo $row['name']; ?>';
 			document.getElementById('imgscr').src = '<?php	echo $row['img']; ?>';
+			document.getElementById('imgscroff').src = '<?php	echo $row['imgon']; ?>';
+			
 			
 			
 		$("#mode").val([<?php	echo $row['mode']; ?>]).select2();
@@ -558,8 +573,9 @@ while($row = $r->fetch_assoc())
 	
 		<script type="text/javascript">
 		function clin(){
-		document.getElementById('imgscr').src = '/css/load.png';
-		document.getElementById('img').value = '/css/load.png';
+		document.getElementById('imgscr').src = './css/load.png';
+		document.getElementById('imgscroff').src = './css/load.png';
+		document.getElementById('img').value = './css/load.png';
 		$('#conditions').val('').change();
 			$('#type').val('').change();
 			document.getElementById('id').value = '';

@@ -132,28 +132,10 @@ $.timepicker.setDefaults($.timepicker.regional['ru']);
     <div class="clearfix"></div>
     <div class="content">    
 	 
-	 <div class="row"  id="inbox-wrapper">
+
 			
-				<div class="col-md-12">
-				<div class="row">
-					<div class="col-md-12">
-						 <div class="grid simple" >
-							<div class="grid-body no-border email-body" >
-							<br>
-							 <div class="row-fluid" >
-							 <div class="row-fluid dataTables_wrapper">
 
-								
-									<div class="clearfix"></div>
-								</div>
-								
-								<div id="email-list">									
-								
-
-								
-								
-						
-					  
+<div class="col-md-12">
     <div class="row">
  
 	  
@@ -364,21 +346,17 @@ while($row = $r->fetch_assoc())
 							 </div>							
 							</div>
 							</div>	
-						</div>
-					</div>
-				</div>	
-		</div>
-		
+			
 		
 
 	
 
- <div class="clearfix"></div>
-  </div>
 
-</div>
 
- </div>
+
+
+
+
  
 <?php	
  include 's-rpanel.php'; 

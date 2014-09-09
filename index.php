@@ -15,6 +15,9 @@
 <link href="css/style.css" rel="stylesheet" type="text/css"/>
 <link href="css/responsive.css" rel="stylesheet" type="text/css"/>
 <script src="js/jquery-1.8.3.min.js" type="text/javascript"></script> 
+<link rel="icon" href="css/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="css/favicon.ico" type="image/x-icon">
+
 </head>
 <body class="error-body no-top lazy"  data-original="assets/img/work.jpg"  style="background-image: url('css/work.jpg');   background-size:cover;    background-repeat:repeat;    background-position:top;"> 
 <div class="container">
