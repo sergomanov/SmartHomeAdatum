@@ -183,6 +183,7 @@ $.timepicker.setDefaults($.timepicker.regional['ru']);
 	
 	document.getElementById('i_mode').style.display="none";
 	document.getElementById('i_drivers').style.display="none";
+	document.getElementById('i_imgoff').style.display="none";
 	
 	
 	}
@@ -196,6 +197,7 @@ $.timepicker.setDefaults($.timepicker.regional['ru']);
 	document.getElementById('i_conditions').style.display="block";
 	document.getElementById('i_mode').style.display="block";
 	document.getElementById('i_drivers').style.display="block";
+		document.getElementById('i_imgoff').style.display="block";
 	}
 	
 	 if(val_i_page==10)
@@ -207,6 +209,7 @@ $.timepicker.setDefaults($.timepicker.regional['ru']);
 	document.getElementById('i_conditions').style.display="none";
 	document.getElementById('i_mode').style.display="block";
 	document.getElementById('i_drivers').style.display="block";
+		document.getElementById('i_imgoff').style.display="none";
 	}
 		
 if(val_i_page==3)
@@ -218,6 +221,7 @@ if(val_i_page==3)
 	document.getElementById('i_conditions').style.display="block";
 	document.getElementById('i_mode').style.display="block";
 	document.getElementById('i_drivers').style.display="block";
+		document.getElementById('i_imgoff').style.display="block";
 	
 	}	
 	
