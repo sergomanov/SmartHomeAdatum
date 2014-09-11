@@ -1,4 +1,3 @@
-SmartHomeAdatum
+Smart Home Adatum Project
 ===============
-
-Open platform home automation
+Arduino scratch for Open platform home automation Adatum+.
