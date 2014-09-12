@@ -5,7 +5,6 @@ error_reporting(E_ALL);
 ini_set("display_errors", 1); 
  include 's-head.php';
  include "ucs2cp1251.class.php";
- 
  echo "-> ".$date_today." ".$time_today." Starting MOD-RS485 ............................................\n";
  
 // проверка запущенной копии
@@ -27,9 +26,16 @@ $resulttty= mysqli_query($con, "SELECT * FROM data WHERE id='19'"); $rowtty=mysq
 $ipservelocal= mysqli_query($con, "SELECT * FROM data WHERE id='21'"); $rowipservelocal=mysqli_fetch_array($ipservelocal); $nameipservelocal = $rowipservelocal['state'];
 //префикс ком порта
 
+//попытка открыть порт
+
+if(fopen("/dev/".$nametty.$numport."","w+")){echo "-> OPEN COM PORT OK\n";}
+else {echo "-> ERROR NO OPEN COM PORT\n";break;}
+
+//попытка открыть порт
+
 
 // отключаем режим эхо на ком порте
-exec("stty  -F /dev/".$nametty.$numport." -echo");
+$logist=exec("stty  -F /dev/".$nametty.$numport." -echo");
 // отключаем режим эхо на ком порте
 	
 
@@ -46,7 +52,7 @@ $serial->confStopBits(1);
 $serial->confFlowControl("none");
 $serial->deviceOpen();
 // подключение адаптера
-
+$read='';
 
 $previousMillis = 0;  
 $previousMilliswrit = 0; 

@@ -5038,9 +5038,11 @@ color: #FFF;
 }
 .modal-header {
   text-align: center;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 13px;
 }
 .modal-header p {
-  color: #8b91a0;
+  color: #569B30;
 }
 .modal-body {
   background-color: #e5e9ec;
@@ -5700,7 +5702,7 @@ color: #FFF;
   margin-bottom: 8px;
 }
 .demo-placeholder {
-  width: 100%;
+  width: 500px;
   height: 250px;
 }
 .btn-social {
@@ -7690,9 +7692,9 @@ td.calendar-day, td.calendar-day-np {
 }
 
 
+.flot-base{left: 20px !important;}
 
-
-
+.flot-text{left: 2px !important;}
 
 
 

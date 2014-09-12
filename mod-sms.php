@@ -4,7 +4,7 @@ ini_set("display_errors", 1);
 include 's-head.php';
 include "ucs2cp1251.class.php";
 include "PhpSerial.php";
-
+echo "-> ".$date_today." ".$time_today." Starting MOD-SMS ............................................\n";
 
 // проверка запущенной копии
 $process = shell_exec('ps ax | grep mod-sms.php');if (substr_count($process,"/html/mod-sms.php")>1){echo "-> ".$date_today." ".$time_today." .......... Process is already running.\n";}else {
@@ -13,7 +13,7 @@ $process = shell_exec('ps ax | grep mod-sms.php');if (substr_count($process,"/ht
 //Проверка подключения устройства и устоновка компорта
 $result= mysqli_query($con, "SELECT * FROM data WHERE id='17'"); $row=mysqli_fetch_array($result); $namedev = $row['state'];
 list ($nameport, $numport) = dev_detect($namedev); 
-echo "-> ".$date_today." ".$time_today." -> Name: ".$nameport." Port: ".$numport."\n"; 
+echo "-> ".$date_today." ".$time_today." Name: ".$nameport." Port: ".$numport."\n"; 
 if($nameport) {
 //Проверка подключения устройства и устоновка компорта
 
@@ -209,7 +209,7 @@ usleep(100);
 }
 
 //сообщаем о недоступности устройства
-else {echo "-> ".$date_today." ".$time_today." "." No connected devices.\n";}; 
+else {echo "-> ".$date_today." ".$time_today." "."No connected devices.\n";}; 
 }
 
 

@@ -139,37 +139,9 @@ if($resmen){ 	while($rowmen = mysqli_fetch_assoc($resmen)){
    <div  class="content">
 
 
-   
-            
+         
 			
 			
-                  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                     
-                       
-                        						 
-<script type="text/javascript">
-
-	$(function() {
-
-
-		var d2 = [[0, 3], [4, 8], [8, 5], [9, 13]];
-	
-
-		$.plot("#placeholder", [ d2 ]);
-		
-	});
-
-</script>
-
-	
-			<div id="placeholder" class="demo-placeholder"></div>
-						
-						
-                      
-                    </div>
-                    <!-- /.modal-dialog -->
-                  </div>
 
  
  
@@ -203,6 +175,7 @@ $mode8=$row8['mode'];
 $ico8=$row8['ico'];
 $color8=$row8['color'];
 $symbol8=$row8['symbol'];
+$name8=$row8['name'];
 ?>
 
  <?php if($edit){?>
@@ -226,7 +199,7 @@ $vale7=$row7['vale1'];
   //echo $row555['coor']."<br>";
 ?>
 
-<div class="draggable tip"  data-toggle="modal" data-target="#myModal" id="dragl<?php echo $row6['address']; ?><?php echo $mode8.$maps; ?>" data-toggle="tooltip" title="" data-placement="bottom" data-original-title="<?php echo $name6." - ".$address6; ?>" style="  position: absolute;  top: <?php echo $row444['coor']; ?>px;  left: <?php echo $row555['coor']; ?>px; color: <?php echo $color8; ?>;">
+<div class="draggable tip"  data-toggle="modal" data-target="#myModal<?php echo $row6['address']; ?><?php echo $mode8.$maps; ?>" id="dragl<?php echo $row6['address']; ?><?php echo $mode8.$maps; ?>" data-toggle="tooltip" title="" data-placement="bottom" data-original-title="<?php echo $name6." - ".$address6; ?>" style="  position: absolute;  top: <?php echo $row444['coor']; ?>px;  left: <?php echo $row555['coor']; ?>px; color: <?php echo $color8; ?>;">
 <i class="<?php echo $ico8; ?>" style="font-size: 20px; <?php   if(isset($_GET['edit'])){ echo "border: 1px solid red;";} ?>"></i><div style="margin:-3px;"><?php echo $vale7; ?> <?php echo $symbol8; ?></div>
  
  <?php   if(isset($_GET['edit'])){  ?>
@@ -236,6 +209,8 @@ $vale7=$row7['vale1'];
  <?php  }  ?>
  
  </div>
+ 
+ 
 
  <?php   if(isset($_GET['edit'])){  ?>
  
@@ -259,6 +234,41 @@ $vale7=$row7['vale1'];
  
 <?php }}?>
 </div>
+<div class="modal fade" id="myModal<?php echo $row6['address']; ?><?php echo $mode8.$maps; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal-dialog"><div class="modal-content" style="  width: 530px;">
+<div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button><p class="no-margin"><?php echo $name8." ( ".$symbol8." ) - ".$name6; ?></p></div>             						 
+
+
+
+<script type="text/javascript">
+	$(function() {
+		var d1 = [
+		[0, 3],
+		[4, 8], 
+		[8, 5], 
+		[9, 513]
+		];
+		
+		var d = [
+<?php
+$re7 = mysqli_query($con,"SELECT * FROM `developments` WHERE address = '$address6' AND mode ='$mode8'  ORDER BY id DESC LIMIT 100"); 
+if($re7) 	{   	while($ro7 = mysqli_fetch_assoc($re7))	{
+$val7=$ro7['vale1'];
+$utime7=$ro7['id'];
+echo "[".$utime7.",".$val7."],";
+//echo $val7;
+//echo $utime7;
+}}
+?>
+		];
+		$.plot("#placeholder<?php echo $row6['address']; ?><?php echo $mode8.$maps; ?>", [ d ],{	
+		  xaxis: { show: false,font :{		lineHeight: 0,style: "normal",family: "sans-serif",variant: "small-caps",color: "#6F7B8A"}},
+		yaxis: {ticks: 3,tickDecimals: 0,tickColor: "#f0f0f0",font :{lineHeight: 13,style: "normal",family: "sans-serif",variant: "small-caps",color: "#6F7B8A"}},
+		grid: {backgroundColor: { colors: [ "#fff", "#fff" ] },borderWidth:1,borderColor:"#f0f0f0",margin:0,minBorderMargin:0,						
+		labelMargin:20,hoverable: true,clickable: true,mouseActiveRadius:6},legend: { show: false}});});
+</script>
+			<div id="placeholder<?php echo $row6['address']; ?><?php echo $mode8.$maps; ?>" class="demo-placeholder"></div>
+<br></div></div></div>
  <?php
 
 }}}} ?>

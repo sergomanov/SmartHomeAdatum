@@ -9,7 +9,7 @@ $process = shell_exec('ps ax | grep mod-system.php');if (substr_count($process,"
 
 include "ucs2cp1251.class.php";
 
-echo "-> ".$date_today." ".$time_today." Starting MOD-SYSTEM ............................................";
+echo "-> ".$date_today." ".$time_today." Starting MOD-SYSTEM ............................................\n";
 	
 	
 
@@ -60,6 +60,7 @@ $name = exec('sudo killall -9 php');echo " -> ".$name."\n\r";
 
 //-------------------------------------Список USB устройств --------------------------------------------------------------------
 $usb = glob("/dev/ttyUSB*", GLOB_NOSORT);
+$a='';
 natsort($usb);
 foreach ($usb as $row) 
 {

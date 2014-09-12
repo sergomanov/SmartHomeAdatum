@@ -528,14 +528,14 @@ $namevalue2 = $_POST['namevalue2'];
 $namevalue3 = $_POST['namevalue3'];
 $namevalue4 = $_POST['namevalue4'];
 $regim = $_POST['regim'];
-
+$colorss = $_POST['icocolor'];
 
  if($type == '1') {  $namevalue2='';  $namevalue3=''; };
  if($type == '2') {  $namevalue3=''; $namevalue4=''; };
  if($type == '3') {  $namevalue4=''; };
  if($type == '4') {  $namevalue1=''; $namevalue2='';  $namevalue3=''; $namevalue4=''; };
 
-mysqli_query($con,"INSERT INTO type (name,type,ico,mode,symbol,namevalue1,namevalue2,namevalue3,namevalue4,regim) VALUES ('$name','$type','$ico','$mode','$symbol','$namevalue1','$namevalue2','$namevalue3','$namevalue4','$regim')");
+mysqli_query($con,"INSERT INTO type (name,type,ico,mode,symbol,namevalue1,namevalue2,namevalue3,namevalue4,regim,color) VALUES ('$name','$type','$ico','$mode','$symbol','$namevalue1','$namevalue2','$namevalue3','$namevalue4','$regim','$colorss')");
 echo "Запись добавлена";
 echo "<SCRIPT> window.location.reload();</SCRIPT>";
 }
@@ -556,12 +556,13 @@ $namevalue2 = $_POST['namevalue2'];
 $namevalue3 = $_POST['namevalue3'];
 $namevalue4 = $_POST['namevalue4'];
 $regim = $_POST['regim'];
+$colorss = $_POST['icocolor'];
  if($type == '1') {  $namevalue2='';  $namevalue3=''; };
  if($type == '2') {  $namevalue3=''; $namevalue4=''; };
  if($type == '3') {  $namevalue4=''; };
  if($type == '4') {  $namevalue1=''; $namevalue2='';  $namevalue3=''; $namevalue4=''; };
 
-mysqli_query($con,"UPDATE type SET name='$name',type='$type',ico='$ico',mode='$mode',symbol='$symbol',namevalue1='$namevalue1',namevalue2='$namevalue2',namevalue3='$namevalue3',namevalue4='$namevalue4',regim='$regim'  WHERE id = '$id'");
+mysqli_query($con,"UPDATE type SET name='$name',type='$type',ico='$ico',mode='$mode',symbol='$symbol',namevalue1='$namevalue1',namevalue2='$namevalue2',namevalue3='$namevalue3',namevalue4='$namevalue4',regim='$regim',color='$colorss'  WHERE id = '$id'");
 echo "Запись изменена";
 echo "<SCRIPT> window.location.reload();</SCRIPT>";
 }

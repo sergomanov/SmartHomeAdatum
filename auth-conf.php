@@ -179,10 +179,7 @@ $db->query("INSERT INTO `logs` (`cont`, `stat`,`date`,`time`) VALUES ('Успе�
 
 
 
-$db_host = 'localhost';
-$db_login = 'root';
-$db_passwd = '111';
-$db_name = 'adatum';
+include_once "mysql";
 $db = new mysql(); //~ Создаем новый объект класса
 $db -> connect($db_host, $db_login, $db_passwd, $db_name);
 ?>

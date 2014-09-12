@@ -9,6 +9,7 @@
  ?>
 
 <link rel="stylesheet" type="text/css" media="all" href="css/googlefont.css" />
+*
 <link rel="stylesheet" type="text/css" media="all" href="css/whhg.css" />
 <link href="css/jquery.sidr.light.css" rel="stylesheet" type="text/css" media="screen"/>
 <link href="css/bootstrap-checkbox.css" rel="stylesheet" type="text/css" media="screen"/>
