@@ -1,10 +1,8 @@
 #include <LiquidCrystal.h>
-#include <WolfCrystal.h>
-#define CASE_SENSITIVE
+#include <PCD8544.h>
 
-
+static PCD8544 lcdm;
 LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
-WolfCrystal WC(&lcd); 
 
 char serianname[] = "6B7DE9KT" ;      // серийный номер устройства в сети
 #define SerialTxControl 10   //RS485 Direction control
@@ -26,13 +24,14 @@ void setup()
     Serial.begin(9600);
    pinMode(SerialTxControl, OUTPUT);    
 
- 
+   lcd.begin(84, 48);
   digitalWrite(SerialTxControl, RS485Transmit); 
   Serial.print("TST,");   Serial.print(serianname); Serial.println(",0,0,0,iBN,TST");
   delay(100); 
   digitalWrite(SerialTxControl, RS485Receive); 
   
-  
+   lcd.begin(16, 2);
+  lcdm.begin(84, 48);
   
  
 
@@ -41,10 +40,6 @@ void setup()
 void loop() {
 
  digitalWrite(SerialTxControl, RS485Receive);  
-  
-utf_recode
-
-      
       
 
   
@@ -74,14 +69,12 @@ utf_recode
       
      }
      
-          if ((String)mode == "DIS")   //DIS,6B7DE9KT,1,Привет мир,0,iBN,DIS
-      {
-
-        lcd.begin(16, 2);
-  lcd.setCursor(0, 0);
-  lcd.print( WC.GS(vale2) );  
-  lcd.setCursor(0, 1);
-  lcd.print( WC.GS("Русский-rulez!") ); 
+          if ((String)mode == "DIS")   //DIS,6B7DE9KT,1,Zeroo,0,iBN,DIS
+      {  
+ lcd.setCursor(0, atoi(vale1));
+ lcd.print(vale2);
+ lcdm.setCursor(0, atoi(vale1));
+ lcdm.print(vale2);
   
      }
      
