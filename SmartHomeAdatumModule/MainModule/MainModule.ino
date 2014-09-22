@@ -38,9 +38,7 @@ char modecontrol[4];                          // Переменные для р�
 IRsend irsend;                                // Ir управление
 int sensorPin = A0;                           // устанавливаем входную ногу для АЦП
 unsigned int sensorValue = 0;                 // цифровое значение фоторезистора
-char serianname[] = "T6DNAE0S" ;              // серийный номер устройства в сети
-char datepr[] = "20140729" ;              
-char ver[] = "ver0024" ;         
+char serianname[] = "T6DNAE0S" ;              // серийный номер устройства в сети     
 char buffer[100];
 int d = 0;
 int lum;//глобальная переменная силы света
@@ -51,23 +49,30 @@ int lumsend;//глобальная переменная силы света
 #define RS485Transmit    HIGH
 #define RS485Receive     LOW  
 
+#include <Wire.h> 
+#include <BMP085.h>
+
+BMP085 dps = BMP085();    
+
+long Temperature = 0, Pressure = 0, Altitude = 0;
 
 
- 
 
- 
-void playTone(int note)  {     digitalWrite(speakerOut,HIGH);     delayMicroseconds(note / 2);     digitalWrite(speakerOut, LOW);     delayMicroseconds(note / 2);} 
+void setup(void) {
+  Serial.begin(9600);
+   pinMode(SerialTxControl, OUTPUT);  
+
   
-void setup() 
-{      
-   pinMode(SerialTxControl, OUTPUT);    
-  Serial.begin(9600); 
+  Wire.begin(); 
+  delay(1000);
+
+  dps.init();  
   pinMode(speakerOut, OUTPUT);
  pinMode(ledPin, OUTPUT);  
  pinMode (pirPin, INPUT);
  
   digitalWrite(SerialTxControl, RS485Transmit); 
-   Serial.print("TST,");   Serial.print(serianname);Serial.print(",");Serial.print(datepr);Serial.print(",");Serial.print(ver); Serial.println(",0,STAT,TST");
+  Serial.print("TST,");   Serial.print(serianname); Serial.println(",0,0,0,STAT,TST");
   delay(100); 
   digitalWrite(SerialTxControl, RS485Receive);                    
  
@@ -78,40 +83,17 @@ void setup()
     irrecv.enableIRIn();                      // Start the receiver
     mySwitch.enableTransmit(7);               // Передатчик RF is connected
     mySwitch.setRepeatTransmit(5);            // Передатчик RF setRepeatTransmit
-
-
-}
-
-
-void loop() 
-{
-
-
-int pirVal = digitalRead (pirPin);
-dalaypir=dalaypir-1;
-if (pirVal == HIGH && dalaypir <0){
- digitalWrite(SerialTxControl, RS485Transmit); 
-   Serial.print("PIR,");   Serial.print(serianname);Serial.print(","); Serial.println("1,0,0,0,PIR");
-  delay(100); 
-  digitalWrite(SerialTxControl, RS485Receive);  
-  dalaypir=5000;
-//delay (2000);
-}
+    
+    
   
+}
  
-  int val = analogRead(analogPin);
-  if(val>130){
-  digitalWrite(SerialTxControl, RS485Transmit); 
-  Serial.print("BEEP,");   Serial.print(serianname); Serial.print(",");     Serial.print(val);    Serial.println(",0,0,0,BEEP");
-  delay(100); 
-  digitalWrite(SerialTxControl, RS485Receive);  }
+void loop(void) {
   
   
   
-
   
-
-//Функция мигания диодом
+  //Функция мигания диодом
  unsigned long ledcurrentMillis = millis();
  if(ledcurrentMillis - ledpreviousMillis > ledinterval && ledcol > 0) {
     ledpreviousMillis = ledcurrentMillis; 
@@ -121,53 +103,83 @@ if (pirVal == HIGH && dalaypir <0){
   }
 //Функция мигания диодом
   
-  
-  
- unsigned long beepcurrent = millis(); 
+ // пищалка 
+   unsigned long beepcurrent = millis(); 
  if(beepcurrent < beepprevious) 
-      {          playTone (beeptone);        }
-
+      {        
+    digitalWrite(speakerOut,HIGH);  
+    delayMicroseconds(beeptone / 2);   
+    digitalWrite(speakerOut, LOW);   
+    delayMicroseconds(beeptone / 2);
+    
+           }
+  // пищалка  
+  
+  
+    int val = analogRead(analogPin);
+  if(val>130){
+  digitalWrite(SerialTxControl, RS485Transmit); 
+  Serial.print("BEEP,");   Serial.print(serianname); Serial.print(",");     Serial.print(val);    Serial.println(",0,0,0,BEEP");
+  delay(100); 
+  digitalWrite(SerialTxControl, RS485Receive);  }
+  
+  
+  
   
    
-  //    digitalWrite(SerialTxControl, RS485Transmit);  
-    digitalWrite(SerialTxControl, RS485Receive);  
-    
-    
+  digitalWrite(SerialTxControl, RS485Receive);  // читаем данные с порта
    
-  int i=0; if(Serial.available()){delay(100);
-  while( Serial.available() && i< 99) { buffer[i++] = Serial.read();} buffer[i++]='\0';}
+ int i=0; if(Serial.available()){delay(100);
+while( Serial.available() && i< 99) 
+{ buffer[i++] = Serial.read();} buffer[i++]='\0';}
   if(i>0)
   {
-  
-//  Serial.println(buffer);
-
-
-  
-     sscanf(buffer, "%[^','],%[^','],%[^','],%[^','],%[^','],%[^','],%s", &mode, &addr, &vale1, &vale2, &vale3, &vale4, &modecontrol);          
-  
-  
-  
-
-     
-
-     
-     
-  
-     if ((String)addr == serianname) {
+    
+       sscanf(buffer, "%[^','],%[^','],%[^','],%[^','],%[^','],%[^','],%s", &mode, &addr, &vale1, &vale2, &vale3, &vale4, &modecontrol);        
+    
+   if ((String)addr == serianname) {
      if ((String)mode == (String)modecontrol) {
        
        
-     if ((String)mode == "TST")   
+     if ((String)mode == "TST")   //TST,T6DNAE0S,0,0,0,0,TST 
       {
-  digitalWrite(SerialTxControl, RS485Transmit); 
-   Serial.print("TST,");   Serial.print(serianname);Serial.print(",");Serial.print(datepr);Serial.print(",");Serial.print(ver); Serial.println(",0,STAT,TST");
+ digitalWrite(SerialTxControl, RS485Transmit); 
+   Serial.print("TST,");   Serial.print(serianname); Serial.println(",0,0,0,STAT,TST");
   delay(100); 
   digitalWrite(SerialTxControl, RS485Receive);   
+     }
+     
+     
+      if ((String)mode == "QA")   //QA,T6DNAE0S,0,0,0,0,QA
+      {
+     int l = analogRead(sensorPin);
+      int h = dht.readHumidity(); 
+      int t = dht.readTemperature(); 
+        dps.getPressure(&Pressure); 
+  dps.getTemperature(&Temperature);
+      
+  digitalWrite(SerialTxControl, RS485Transmit); 
+  Serial.print("LUM,");   Serial.print(serianname);Serial.print(","); Serial.print(l); Serial.println(",0,0,0,LUM");
+  delay(100); 
+  Serial.print("HUM,");   Serial.print(serianname);Serial.print(","); Serial.print(h); Serial.println(",0,0,0,HUM");
+  delay(100); 
+ // Serial.print("TEM,");   Serial.print(serianname);Serial.print(","); Serial.print(t); Serial.println(",0,0,0,TEM");
+ // delay(100); 
+   Serial.print("BEEP,");   Serial.print(serianname);Serial.print(","); Serial.print(val); Serial.println(",0,0,0,BEEP");
+  delay(100); 
+     Serial.print("TEM,");   Serial.print(serianname);Serial.print(","); Serial.print(Temperature*0.1); Serial.println(",0,0,0,TEM");
+  delay(100); 
+      Serial.print("PRS,");   Serial.print(serianname);Serial.print(","); Serial.print(Pressure/133.3); Serial.println(",0,0,0,PRS");
+  delay(100);  
+  
+   Serial.print("SEND,");  Serial.print(serianname);   Serial.println("0,0,0,0,QA,SEND");       
+   delay(100); 
+  digitalWrite(SerialTxControl, RS485Receive); 
       
      }
      
      
-          if ((String)mode == "LED")   //LED,T6DNAE0S,500,5,0,0,LED
+      if ((String)mode == "LED")   //LED,T6DNAE0S,100,15,0,0,LED
 
       {
 ledinterval = atoi(vale1);          
@@ -178,35 +190,7 @@ ledcol=atoi(vale2);
   digitalWrite(SerialTxControl, RS485Receive);   
      }
      
-     
-     
-     
-          if ((String)mode == "QA")   
-      {
-
-        
-              int l = analogRead(sensorPin);
-      int h = dht.readHumidity(); 
-      int t = dht.readTemperature(); 
-      
-      
-  digitalWrite(SerialTxControl, RS485Transmit); 
-  Serial.print("LUM,");   Serial.print(serianname);Serial.print(","); Serial.print(l); Serial.println(",0,0,0,LUM");
-  delay(100); 
-  Serial.print("HUM,");   Serial.print(serianname);Serial.print(","); Serial.print(h); Serial.println(",0,0,0,HUM");
-  delay(100); 
-  Serial.print("TEM,");   Serial.print(serianname);Serial.print(","); Serial.print(t); Serial.println(",0,0,0,TEM");
-  delay(100); 
-   Serial.print("BEEP,");   Serial.print(serianname);Serial.print(","); Serial.print(val); Serial.println(",0,0,0,BEEP");
-  delay(100); 
-   Serial.print("SEND,");  Serial.print(serianname);   Serial.println("0,0,0,0,QA,SEND");       
-   delay(100); 
-  digitalWrite(SerialTxControl, RS485Receive); 
-      
-     }
-
-   
-    if ((String)mode == "RF")   
+      if ((String)mode == "RF")   //RF,T6DNAE0S,11229962,24,293,0,RF
       {
       mySwitch.setPulseLength(atol(vale3)-64); 
       mySwitch.send(atol(vale1), atol(vale2));    
@@ -214,18 +198,16 @@ ledcol=atoi(vale2);
     
        digitalWrite(SerialTxControl, RS485Transmit); 
        
-      Serial.print("SEND,");  Serial.print(serianname);   Serial.print(",");    Serial.print(vale1);   Serial.print(","); Serial.print(vale2);   Serial.print(",");Serial.print(vale3);   Serial.println(",RF,SEND");        //RF,T6DNAE0SKO,11229962,24,293,0,RF, 
+      Serial.print("SEND,");  Serial.print(serianname);   Serial.print(",");    Serial.print(vale1);   Serial.print(","); Serial.print(vale2);   Serial.print(",");Serial.print(vale3);   Serial.println(",RF,SEND");         
      
        delay(100); 
       digitalWrite(SerialTxControl, RS485Receive); 
       
      }
 
-    if ((String)mode == "IR")
-      {
+    if ((String)mode == "IR")    //IR,T6DNAE0S,PAN,16825533,16388,0,IR
 
- // irsend.sendPanasonic(4004,100BCBD); // This should turn your TV on and off
-//  irsend.sendPanasonic(16388,16825533); // This should turn your TV on and off
+      {
        if ((String)vale1 == "NEC") {     int long bits2 = atol(vale2); int long value2 = atol(vale3); irsend.sendNEC(bits2, value2);     } 
        if ((String)vale1 == "SONY"){     int long bits4 = atol(vale2); int long value4 = atol(vale3); irsend.sendSony(bits4, value4);    }      
        if ((String)vale1 == "RC5") {     int long bits5 = atol(vale2); int long value5 = atol(vale3); irsend.sendRC5(bits5, value5);     }     
@@ -240,24 +222,72 @@ ledcol=atoi(vale2);
      }
       irrecv.enableIRIn();
       
-    if ((String)mode == "MU")    
+    if ((String)mode == "MU")     // MU,T6DNAE0S,100,100,0,0,MU  
     {  
          digitalWrite(SerialTxControl, RS485Transmit); 
-      Serial.print("SEND,"); Serial.print(serianname);   Serial.print(",");  Serial.print(vale1);   Serial.print(","); Serial.print(vale2);   Serial.print(",");Serial.print(vale3);   Serial.println(",MU,SEND");         // MU,T6DNAE0S,1500,1000,0,0,MU  
+      Serial.print("SEND,"); Serial.print(serianname);   Serial.print(",");  Serial.print(vale1);   Serial.print(","); Serial.print(vale2);   Serial.print(",");Serial.print(vale3);   Serial.println(",MU,SEND");        
              delay(100); 
       digitalWrite(SerialTxControl, RS485Receive); 
       beeptone=atoi(vale1);
       beepprevious = millis()+atoi(vale2); 
     } 
-   
- }
- } 
- }
+    
+    
+     }}
+    
+//  Serial.println(buffer); // Выводим что приняли с других устройств
+  }
   
   
   
   
-  if (irrecv.decode(&results)) {
+// Датчик движения
+int pirVal = digitalRead (pirPin);
+dalaypir=dalaypir-1;
+if (pirVal == HIGH && dalaypir <0){
+digitalWrite(SerialTxControl, RS485Transmit); 
+Serial.print("PIR,");   Serial.print(serianname);Serial.print(","); Serial.println("1,0,0,0,PIR");
+delay(100); digitalWrite(SerialTxControl, RS485Receive);  
+dalaypir=5000;}
+// Датчик движения  
+  
+// Радио датчик
+if (mySwitch.available()>0 ) 
+{  rf_dt = mySwitch.getReceivedValue();  unsigned long currentMillis2 = millis();                                                                                                                                     // Приемник RF
+   if ((old_rf != rf_dt) || (currentMillis2 - previousMillis2 > 300)) 
+     { previousMillis2 = currentMillis2; old_rf=rf_dt; 
+     
+    
+     
+  digitalWrite(SerialTxControl, RS485Transmit); 
+  Serial.print("RF,");   Serial.print(serianname);Serial.print(","); Serial.print(mySwitch.getReceivedValue());Serial.print(",");Serial.print(mySwitch.getReceivedBitlength());Serial.print(",");Serial.print( mySwitch.getReceivedDelay() ); Serial.println(",0,RF");
+  delay(100); 
+  digitalWrite(SerialTxControl, RS485Receive); 
+     
+            mySwitch.resetAvailable();
+     } 
+   mySwitch.resetAvailable(); 
+}
+// Радио датчик  
+  
+  
+//Датчик света    
+    if(lum > 0){
+    int l = analogRead(sensorPin);
+    if (abs((lum-l)/10)>10){   lum = analogRead(sensorPin); lumsend=lum; }
+    }
+    else    {      lum = analogRead(sensorPin);    }
+    
+    if(lumsend > 0){
+  digitalWrite(SerialTxControl, RS485Transmit); 
+  Serial.print("LUM,");   Serial.print(serianname);Serial.print(","); Serial.print(lumsend); Serial.println(",0,0,0,LUM");
+  delay(100);   digitalWrite(SerialTxControl, RS485Receive);       lumsend=0;
+    }  
+//Датчик света      
+  
+  
+  
+if (irrecv.decode(&results)) {
   if (results.value > 0 && results.value < 0xFFFFFFFF)     {  
     
   int count = results.rawlen;
@@ -310,66 +340,9 @@ ledcol=atoi(vale2);
 
  }
     irrecv.enableIRIn();
+}  
+  
+  
+  
+ 
 }
-
-
-if (mySwitch.available()>0 ) 
-{  rf_dt = mySwitch.getReceivedValue();  unsigned long currentMillis2 = millis();                                                                                                                                     // Приемник RF
-   if ((old_rf != rf_dt) || (currentMillis2 - previousMillis2 > 300)) 
-     { previousMillis2 = currentMillis2; old_rf=rf_dt; 
-     
-     
-  //   digitalWrite(SerialTxControl, RS485Transmit); delay(100);
-  //     Serial.print("RF,"); Serial.print(serianname); Serial.print(","); Serial.print( mySwitch.getReceivedValue() ); Serial.print(","); Serial.print( mySwitch.getReceivedBitlength() ); Serial.print(",");  Serial.print( mySwitch.getReceivedDelay() ); Serial.println(",0,RF");   
-  //    digitalWrite(SerialTxControl, RS485Receive);  
-     
-       digitalWrite(SerialTxControl, RS485Transmit); 
-  Serial.print("RF,");   Serial.print(serianname);Serial.print(","); Serial.print(mySwitch.getReceivedValue());Serial.print(",");Serial.print(mySwitch.getReceivedBitlength());Serial.print(",");Serial.print( mySwitch.getReceivedDelay() ); Serial.println(",0,RF");
-  delay(100); 
-  digitalWrite(SerialTxControl, RS485Receive); 
-     
-            mySwitch.resetAvailable();
-     } 
-   mySwitch.resetAvailable(); 
-}
-
-   
-   
-   
-   
-    
-    if(lum > 0){
-    int l = analogRead(sensorPin);
-    if (abs((lum-l)/10)>10){   lum = analogRead(sensorPin); lumsend=lum; }
-    }
-    else
-    {
-      lum = analogRead(sensorPin);
-    }
-    
-    if(lumsend > 0){
-  digitalWrite(SerialTxControl, RS485Transmit); 
-  Serial.print("LUM,");   Serial.print(serianname);Serial.print(","); Serial.print(lumsend); Serial.println(",0,0,0,LUM");
-  delay(100); 
-  digitalWrite(SerialTxControl, RS485Receive);   
-    lumsend=0;
-    }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-
-}
-
-

@@ -1736,6 +1736,10 @@ blockquote.pull-right small:after {
   opacity: 0.6;
   filter: alpha(opacity=60);
 }
+.ico-opacity {
+  opacity: 0.3;
+  filter: alpha(opacity=30);
+}
 .text-right {
   text-align: right !important;
 }
@@ -4950,6 +4954,20 @@ background-color: #FB3C4A;
 padding: 4px 6px;
 border-radius: 12px !important;
 text-shadow: none !important;
+color: #FFF;
+}
+.badgem3 {
+
+padding: 5px 7px;
+font-size: 11px;
+top:-6px;
+left:-5px;
+line-height: 1;
+vertical-align: baseline;
+position: absolute;
+background-color: rgba(251, 60, 74, 0.54);
+border-radius: 12px !important;
+
 color: #FFF;
 }
 .label-primary,

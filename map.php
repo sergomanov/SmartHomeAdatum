@@ -200,7 +200,8 @@ $vale7=$row7['vale1'];
 ?>
 
 <div class="draggable tip"  data-toggle="modal" data-target="#myModal<?php echo $row6['address']; ?><?php echo $mode8.$maps; ?>" id="dragl<?php echo $row6['address']; ?><?php echo $mode8.$maps; ?>" data-toggle="tooltip" title="" data-placement="bottom" data-original-title="<?php echo $name6." - ".$address6; ?>" style="  position: absolute;  top: <?php echo $row444['coor']; ?>px;  left: <?php echo $row555['coor']; ?>px; color: <?php echo $color8; ?>;">
-<i class="<?php echo $ico8; ?>" style="font-size: 20px; <?php   if(isset($_GET['edit'])){ echo "border: 1px solid red;";} ?>"></i><div style="margin:-3px;"><?php echo $vale7; ?> <?php echo $symbol8; ?></div>
+ <span class="badgem3">X</span>
+<i class="<?php echo $ico8; ?> ico-opacity" style="font-size: 20px; <?php   if(isset($_GET['edit'])){ echo "border: 1px solid red;";} ?>"></i><div style="margin:-3px;"><?php echo $vale7; ?> <?php echo $symbol8; ?></div>
  
  <?php   if(isset($_GET['edit'])){  ?>
  <input TYPE=hidden value=''   size='25' name="name" id='top<?php echo $row6['address']; ?><?php echo $mode8.$maps; ?>' style="background-color: transparent;font-size: 8px;min-height: 16px;"/><br>
@@ -322,11 +323,13 @@ $commands9=$row9['commands'];
  
  <?php if($edit=='1'){?> <a style = 'cursor: pointer;' onclick="$.ajax({type: 'POST',url: 's-response.php',data: 'value=<?php	echo $commands9; ?>',success: function(data){$('.results').html(data);}});"> <?php } ?>
  <div class="draggable tip" id="dragl<?php echo $row9['id'].$address2; ?>" data-toggle="tooltip" title="" data-placement="bottom" data-original-title="<?php echo $name9; ?>" style="  position: absolute;  top: <?php echo $row222['coor']; ?>px;  left: <?php echo $row333['coor']; ?>px;">
- <img src="<?php echo $img99; ?>" width="55" alt="lorem" style=" <?php   if(isset($_GET['edit'])){ echo "border: 1px solid red;";} ?>"><div style="margin:-3px;"><?php   echo  parse_timestamp($timereal-$unixtimecommands);?></div>
+ <span class="badgem3">X</span>
+ <img src="<?php echo $img99; ?>" width="55" alt="lorem" class="ico-opacity" style=" <?php   if(isset($_GET['edit'])){ echo "border: 1px solid red;";} ?>"><div style="margin:-3px;"><?php   echo  parse_timestamp($timereal-$unixtimecommands);?></div>
  <?php   if(isset($_GET['edit'])){  ?> 
  <input TYPE=hidden value=''  size='20' name="name" id='top<?php echo $row9['id'].$address2; ?>' style="background-color: transparent;font-size: 8px;min-height: 16px;"/><br>
  <input TYPE=hidden value=''  size='20' name="name" id='left<?php echo $row9['id'].$address2; ?>' style="background-color: transparent ;font-size: 8px; min-height: 16px; "/>
 <?php  }  ?>
+
  </div>
  <?php if($edit=='1'){?> </a><?php } ?>
    <?php   if(isset($_GET['edit'])){  ?>
@@ -391,7 +394,7 @@ values = $("input[name=name]").map(function(){return $(this).val();}).get();
 var data = $("input[name=name]").map(function(){return $(this).val();}).get();
        $.ajax({
                 type: "POST",
-                url: "/SendData.php",
+                url: "SendData.php",
                 data: "data="+data,
                 success: function(html) {
                         $("#result").empty();
