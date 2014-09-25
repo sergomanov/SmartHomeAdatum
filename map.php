@@ -6,7 +6,6 @@
  include 'autt.php';
  include 's-head.php';
  include 's-libmon.php'; 
-
  ?>
   
 <link rel="stylesheet" type="text/css" media="all" href="css/googlefont.css" />
@@ -32,10 +31,6 @@
 
 
 <script src="js/jquery-1.8.3.min.js" type="text/javascript"></script> 
-
-
-
-
 <script src="js/jquery-ui-1.10.1.custom.min.js" type="text/javascript"></script> 
 <script src="js/bootstrap.min.js" type="text/javascript"></script> 
 <script src="js/breakpoints.js" type="text/javascript"></script> 
@@ -55,7 +50,7 @@
 <script language="javascript" type="text/javascript" src="js/jquery.flot.js"></script>
 <script language="javascript" type="text/javascript" src="js/jquery.flot.time.js"></script>
 <script language="javascript" type="text/javascript" src="js/jquery.flot.selection.js"></script>
-<script language="JavaScript" type="text/javascript" src="js/curvedLines.js"></script>
+
 
 
 
@@ -88,11 +83,9 @@
    <div class="inner-menu nav-collapse">   
 
 
-	<div class="inner-wrapper" >	
+<div class="inner-wrapper" ><p class="menu-title"><i class="icon-home" style="font-size: 25px;"></i>	Панель управления</p></div>
 
-		<p class="menu-title"><i class="icon-home" style="font-size: 25px;"></i>	Панель управления</p>		
-	 </div>
-	<ul class="small-items">
+<ul class="small-items">
 
   <li    <?php if($imyaStranici=='pu.php'){echo "class='active'";}?>><a href="pu.php"><i class="icon-windows"></i> Каталог </a></li>
   
@@ -100,16 +93,13 @@
   
   
    <?php
+$timedat= mysqli_query($con, "SELECT * FROM data WHERE id='22'"); $rowtimedat=mysqli_fetch_array($timedat); $timedatact = $rowtimedat['state'];   
+   
 if(isset($_GET['map'])) {	$maps=$_GET['map']; }
+if(isset($_GET['mode'])) {	$modes=$_GET['mode']; }
+if(isset($_GET['address'])) {	$addresss=$_GET['address']; }
 
-if(isset($_GET['edit']))
-{
-$edit=0;
-}
-else 
-{
-$edit=1;
-}
+if(isset($_GET['edit'])){$edit=0;} else {$edit=1;}
 
 $resmen = mysqli_query($con,"SELECT * FROM `scheduler` WHERE type = '10'"); 
 if($resmen){ 	while($rowmen = mysqli_fetch_assoc($resmen)){
@@ -139,9 +129,96 @@ if($resmen){ 	while($rowmen = mysqli_fetch_assoc($resmen)){
    <div  class="content">
 
 
+   
+
+   <div  style="<?php if(!isset($_GET['mode'])) {	echo "display: none;"; } ?>">
+    <?php 
+	
+$typechartp= mysqli_query($con, "SELECT * FROM type WHERE mode='$modes'"); $typechart=mysqli_fetch_array($typechartp); $typecharts = $typechart['tchart'];  
+	
+//	echo $typecharts; 
+	
+	?>
+   	<script type="text/javascript">
+
+	$(function() {
+
+		var d = [
+
+		
+				   <?php
+
+$res9 = mysqli_query($con,"SELECT * FROM `developments` WHERE mode = '$modes' AND address = '$addresss'"); 
+if($res9){ 	while($row9 = mysqli_fetch_assoc($res9)){
+//echo $row9['unixtime']."<br>";
+$utime7=$row9['unixtime'];
+$vale79=$row9['vale1'];
+$utime7=$utime7."000";
+echo "[".$utime7.",".$vale79."],";
+
+}}
+?>	
+		];
+	
+
+
+
+
+		function weekendAreas(axes) {
+
+			var markings = [],
+			d = new Date(axes.xaxis.min);
+			d.setUTCDate(d.getUTCDate() - ((d.getUTCDay() + 1) % 7))
+			d.setUTCSeconds(0);
+			d.setUTCMinutes(0);
+			d.setUTCHours(0);
+
+			var i = d.getTime();
+			do {
+				markings.push({ xaxis: { from: i, to: i + 2 * 24 * 60 * 60 * 1000 } });
+				i += 7 * 24 * 60 * 60 * 1000;
+			} while (i < axes.xaxis.max);
+
+			return markings;
+		}
+
+		var options = {
+<?php if($typecharts==0) {	echo "series: {lines: {show: true}  },"; } ?>
+<?php if($typecharts==1) {	echo "bars: {show: true, align: 'center', barWidth: 0.2,},"; } ?>
+ 
+			xaxis: {
+			
+				mode: "time",
+				tickLength: 5
+			},
+	legend: {
+				
+				show: true
+			},
+			yaxis: {
+		
+		
+			},
+			grid:   {markings: weekendAreas, backgroundColor: { colors: [ "#fff", "#fff" ] },borderWidth:1,borderColor:"#f0f0f0",margin:0,minBorderMargin:0, labelMargin:20,hoverable: true}
+	
+		};
+
+		var plot = $.plot("#placeholders", [d], options);
+
+
+	});
+	
+	</script>
+
+	<div id="placeholders" class="demo-placeholder"  style="width: 100%;height: 200px;"></div>
          
-			
-			
+	</div>	
+
+
+
+
+
+		<div  style="position:relative">	
 
  
  
@@ -172,6 +249,7 @@ $name6=$row6['name'];
 $res8 = mysqli_query($con,"SELECT * FROM `type` WHERE id IN ($mode5)"); 
 if($res8){ 	while($row8 = mysqli_fetch_assoc($res8))	{
 $mode8=$row8['mode'];
+$tchart8=$row8['tchart'];
 $ico8=$row8['ico'];
 $color8=$row8['color'];
 $symbol8=$row8['symbol'];
@@ -181,11 +259,13 @@ $name8=$row8['name'];
  <?php if($edit){?>
  <script> setInterval(function(){$("#mododat<?php	echo $address6.$mode8.$maps; ?>").load("<?php   echo basename($_SERVER['PHP_SELF']);?>?map=<?php	echo $maps; ?> #mododat<?php	echo $address6.$mode8.$maps; ?>"); }, 1000); </script>
  <?php } ?>
+ 
  <div id="mododat<?php	echo $address6.$mode8.$maps; ?>">
 <?php
 $res7 = mysqli_query($con,"SELECT * FROM `developments` WHERE address = '$address6' AND mode ='$mode8'  ORDER BY id DESC LIMIT 1"); 
 if($res7) 	{   	while($row7 = mysqli_fetch_assoc($res7))	{
 $vale7=$row7['vale1'];
+$unixtime7=$row7['unixtime'];
 
   $polles444="top".$row6['address'].$mode8.$maps;
   $result444= mysqli_query($con, "SELECT * FROM `coordinates` WHERE idn = '$polles444'"); 
@@ -198,10 +278,38 @@ $vale7=$row7['vale1'];
  $row555=mysqli_fetch_array($result555);
   //echo $row555['coor']."<br>";
 ?>
+  <a href="map.php?map=<?php echo $maps;?>&mode=<?php echo $mode8;?>&address=<?php echo $address6;?>" >
 
-<div class="draggable tip"  data-toggle="modal" data-target="#myModal<?php echo $row6['address']; ?><?php echo $mode8.$maps; ?>" id="dragl<?php echo $row6['address']; ?><?php echo $mode8.$maps; ?>" data-toggle="tooltip" title="" data-placement="bottom" data-original-title="<?php echo $name6." - ".$address6; ?>" style="  position: absolute;  top: <?php echo $row444['coor']; ?>px;  left: <?php echo $row555['coor']; ?>px; color: <?php echo $color8; ?>;">
- <span class="badgem3">X</span>
-<i class="<?php echo $ico8; ?> ico-opacity" style="font-size: 20px; <?php   if(isset($_GET['edit'])){ echo "border: 1px solid red;";} ?>"></i><div style="margin:-3px;"><?php echo $vale7; ?> <?php echo $symbol8; ?></div>
+<div class="draggable"  id="dragl<?php echo $row6['address']; ?><?php echo $mode8.$maps; ?>" style="  position: absolute;  top: <?php echo $row444['coor']; ?>px;  left: <?php echo $row555['coor']; ?>px; color: <?php echo $color8; ?>;">
+ <?php  if($timereal - $timedatact > $unixtime7){echo "<span class='badgem3'>X</span>";}  ?>
+ 
+ 
+ 
+ 
+ <?php if($tchart8==1&&($timereal-$unixtime7<15)) {
+ if ((($timereal-$unixtime7) % 2) == 0){
+ ?>
+  <i class="<?php echo $ico8; ?>  <?php  if($timereal -  $timedatact > $unixtime7){echo "ico-opacity";}  ?>" style="font-size: 20px; <?php   if(isset($_GET['edit'])){ echo "border: 1px solid red;";} ?>"></i>
+ <?php
+}
+else {
+ ?>
+  <i class=" <?php echo $ico8; ?>  <?php  if($timereal -  $timedatact > $unixtime7){echo "ico-opacity";}  ?>" style="font-size: 20px; color: #FA2841;<?php   if(isset($_GET['edit'])){ echo "border: 1px solid red;";} ?>"></i>
+ <?php
+}
+
+ ?>
+
+ <?php } else {?>
+ <i class="<?php echo $ico8; ?>  <?php  if($timereal -  $timedatact > $unixtime7){echo "ico-opacity";}  ?>" style="font-size: 20px; <?php   if(isset($_GET['edit'])){ echo "border: 1px solid red;";} ?>"></i>
+  <?php }?>
+ 
+ 
+
+<?php if($tchart8==0) {	echo "<div style='margin:-3px;'>".$vale7.$symbol8."</div>"; } ?>
+<?php if($tchart8==1) {	echo "<div style='margin:-3px;'>".parse_timestamp($timereal-$unixtime7)."</div>"; } ?>
+
+
  
  <?php   if(isset($_GET['edit'])){  ?>
  <input TYPE=hidden value=''   size='25' name="name" id='top<?php echo $row6['address']; ?><?php echo $mode8.$maps; ?>' style="background-color: transparent;font-size: 8px;min-height: 16px;"/><br>
@@ -210,7 +318,7 @@ $vale7=$row7['vale1'];
  <?php  }  ?>
  
  </div>
- 
+ </a>
  
 
  <?php   if(isset($_GET['edit'])){  ?>
@@ -235,41 +343,7 @@ $vale7=$row7['vale1'];
  
 <?php }}?>
 </div>
-<div class="modal fade" id="myModal<?php echo $row6['address']; ?><?php echo $mode8.$maps; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-<div class="modal-dialog"><div class="modal-content" style="  width: 530px;">
-<div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button><p class="no-margin"><?php echo $name8." ( ".$symbol8." ) - ".$name6; ?></p></div>             						 
 
-
-
-<script type="text/javascript">
-	$(function() {
-		var d1 = [
-		[0, 3],
-		[4, 8], 
-		[8, 5], 
-		[9, 513]
-		];
-		
-		var d = [
-<?php
-$re7 = mysqli_query($con,"SELECT * FROM `developments` WHERE address = '$address6' AND mode ='$mode8'  ORDER BY id DESC LIMIT 100"); 
-if($re7) 	{   	while($ro7 = mysqli_fetch_assoc($re7))	{
-$val7=$ro7['vale1'];
-$utime7=$ro7['id'];
-echo "[".$utime7.",".$val7."],";
-//echo $val7;
-//echo $utime7;
-}}
-?>
-		];
-		$.plot("#placeholder<?php echo $row6['address']; ?><?php echo $mode8.$maps; ?>", [ d ],{	
-		  xaxis: { show: false,font :{		lineHeight: 0,style: "normal",family: "sans-serif",variant: "small-caps",color: "#6F7B8A"}},
-		yaxis: {ticks: 3,tickDecimals: 0,tickColor: "#f0f0f0",font :{lineHeight: 13,style: "normal",family: "sans-serif",variant: "small-caps",color: "#6F7B8A"}},
-		grid: {backgroundColor: { colors: [ "#fff", "#fff" ] },borderWidth:1,borderColor:"#f0f0f0",margin:0,minBorderMargin:0,						
-		labelMargin:20,hoverable: true,clickable: true,mouseActiveRadius:6},legend: { show: false}});});
-</script>
-			<div id="placeholder<?php echo $row6['address']; ?><?php echo $mode8.$maps; ?>" class="demo-placeholder"></div>
-<br></div></div></div>
  <?php
 
 }}}} ?>
@@ -323,8 +397,8 @@ $commands9=$row9['commands'];
  
  <?php if($edit=='1'){?> <a style = 'cursor: pointer;' onclick="$.ajax({type: 'POST',url: 's-response.php',data: 'value=<?php	echo $commands9; ?>',success: function(data){$('.results').html(data);}});"> <?php } ?>
  <div class="draggable tip" id="dragl<?php echo $row9['id'].$address2; ?>" data-toggle="tooltip" title="" data-placement="bottom" data-original-title="<?php echo $name9; ?>" style="  position: absolute;  top: <?php echo $row222['coor']; ?>px;  left: <?php echo $row333['coor']; ?>px;">
- <span class="badgem3">X</span>
- <img src="<?php echo $img99; ?>" width="55" alt="lorem" class="ico-opacity" style=" <?php   if(isset($_GET['edit'])){ echo "border: 1px solid red;";} ?>"><div style="margin:-3px;"><?php   echo  parse_timestamp($timereal-$unixtimecommands);?></div>
+
+ <img src="<?php echo $img99; ?>" width="55" alt="lorem" style=" <?php   if(isset($_GET['edit'])){ echo "border: 1px solid red;";} ?>"><div style="margin:-3px;"><?php   echo  parse_timestamp($timereal-$unixtimecommands);?></div>
  <?php   if(isset($_GET['edit'])){  ?> 
  <input TYPE=hidden value=''  size='20' name="name" id='top<?php echo $row9['id'].$address2; ?>' style="background-color: transparent;font-size: 8px;min-height: 16px;"/><br>
  <input TYPE=hidden value=''  size='20' name="name" id='left<?php echo $row9['id'].$address2; ?>' style="background-color: transparent ;font-size: 8px; min-height: 16px; "/>
@@ -379,13 +453,25 @@ $commands9=$row9['commands'];
 } 
   ?>
 	
-<img src="<?php echo $img5; ?>"  alt="lorem">
-
+<img src="<?php echo $img5; ?>"  alt="lorem" >
 
 
 
 
 <div id="result"></div>
+
+
+
+
+</div>	
+	
+
+
+
+
+
+
+
 
 <script>
 function send()

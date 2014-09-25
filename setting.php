@@ -245,6 +245,19 @@ $.timepicker.setDefaults($.timepicker.regional['ru']);
 							<input type="text" name="nameipservelocal" id="nameipservelocal" class="form-control" value="<?php echo $nameipservelocal;?>">                                 
 						</div>
 						
+							    
+
+								<label class="form-label">Время через которое считать датчики недоступными (секунды)</label>
+                       
+						<div class="input-with-icon  right">                                       
+							<i class=""></i>
+<?php
+	$result= mysqli_query($con, "SELECT * FROM data WHERE id='22'");
+	$row=mysqli_fetch_array($result);	if($row){$timeperioddat = $row['state'];}
+?>
+							<input type="text" name="timeperioddat" id="timeperioddat" class="form-control" value="<?php echo $timeperioddat;?>">                                 
+						</div>
+						
 						
 						
 						<br>
@@ -495,6 +508,8 @@ $namedev= $_POST['namedev'];
 $prefixcom= $_POST['prefixcom'];
 $cities= $_POST['cities'];
 $nameipservelocal= $_POST['nameipservelocal'];
+$timeperioddat= $_POST['timeperioddat'];
+
 
  
 mysqli_query($con,"UPDATE data SET state='$timezone'  WHERE id = 4");
@@ -502,6 +517,7 @@ mysqli_query($con,"UPDATE data SET state='$namedev'  WHERE id = 5");
 mysqli_query($con,"UPDATE data SET state='$prefixcom'  WHERE id = 19");
 mysqli_query($con,"UPDATE data SET state='$cities'  WHERE id = 2");
 mysqli_query($con,"UPDATE data SET state='$nameipservelocal'  WHERE id = 21");
+mysqli_query($con,"UPDATE data SET state='$timeperioddat'  WHERE id = 22");
  echo "Запись изменена";
  echo "<SCRIPT> window.location.reload();</SCRIPT>";
 }

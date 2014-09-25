@@ -9,7 +9,6 @@
  ?>
 
 <link rel="stylesheet" type="text/css" media="all" href="css/googlefont.css" />
-*
 <link rel="stylesheet" type="text/css" media="all" href="css/whhg.css" />
 <link href="css/jquery.sidr.light.css" rel="stylesheet" type="text/css" media="screen"/>
 <link href="css/bootstrap-checkbox.css" rel="stylesheet" type="text/css" media="screen"/>
@@ -261,6 +260,7 @@ $r = $_PAGING->get_page( 'SELECT * FROM commands WHERE mode LIKE "%'.$search.'%"
                     <tr>
 				
                     <th width="30"> </th>
+					 <th width="30"> </th>
 						<th>Тип</th>
 				    <th>  <div class="checkbox check-default"><input id="checkbox10" type="checkbox" value="1" class="checkall"><label for="checkbox10"></label></div></th>
                     <th>Наименование</th>
@@ -281,10 +281,29 @@ $r = $_PAGING->get_page( 'SELECT * FROM commands WHERE mode LIKE "%'.$search.'%"
 
    <tr>
     
+
+<td>
+<?php	
+
+ if($row['vale1']){ $vale1=$row['vale1'];}	   else	   {$vale1=0;}
+ if($row['vale2']){ $vale2=$row['vale2'];}	   else	   {$vale2=0;}
+ if($row['vale3']){ $vale3=$row['vale3'];}	   else	   {$vale3=0;}
+ if($row['vale4']){ $vale4=$row['vale4'];}	   else	   {$vale4=0;}
+ 
+$Mcommands=$row['mode'].",".$row['address'].",".$vale1.",".$vale2.",".$vale3.",".$vale4.",".$row['mode'];
+//echo $Mcommands; 
+
+?>
+<a title="Выполнить комманду" onclick="$.ajax({type: 'POST',url: 's-respfast.php',data: 'value=<?php	echo $Mcommands; ?>',success: function(data){$('.results').html(data);}});" style="cursor: crosshair;"><i class=" icon-lightning " style="color:#E9AE16;"></i></a>
+</td>
+
+
 <td><a href="javascript:void(0)," onclick="getText<?php echo $row['id'];?>()">
 <?php $rowmode = $row['mode']; $resico = mysqli_query($con,"SELECT * FROM `type` WHERE mode ='$rowmode'");if($resico){while($rowico = mysqli_fetch_assoc($resico)){$rowicon=$rowico['ico']; ?>
 <i class="<?php echo $rowicon; ?> text-success "></i> <?php }}  ?></a>
 </td>
+
+
 <td><a href="javascript:void(0)," onclick="getText<?php echo $row['id'];?>()" id="text"><?php	echo $row['mode']; ?></a></td>  
 
 					  

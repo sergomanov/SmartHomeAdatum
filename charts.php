@@ -44,7 +44,7 @@
 <script language="javascript" type="text/javascript" src="js/jquery.flot.js"></script>
 <script language="javascript" type="text/javascript" src="js/jquery.flot.time.js"></script>
 <script language="javascript" type="text/javascript" src="js/jquery.flot.selection.js"></script>
-<script language="JavaScript" type="text/javascript" src="js/curvedLines.js"></script>
+
 
  <script>
         $(document).ready(function() { $(".select2").select2(); });
@@ -358,7 +358,7 @@ var d<?php echo $rowchart['id'];?> = [	<?php 	$res8 = mysqli_query($con,"SELECT 
 			do {markings.push({ xaxis: { from: i, to: i + 2 * 24 * 60 * 60 * 1000 } });	i += 7 * 24 * 60 * 60 * 1000;} while (i < axes.xaxis.max);	return markings;}
 
 		var options = {
-			series: {lines: {show: true}, curvedLines: {  active: true, fit: true, apply: true }  }, 	xaxis: {mode: "time",tickLength: 5},selection: {mode: "x"},
+			series: {lines: {show: true}  }, 	xaxis: {mode: "time",tickLength: 5},selection: {mode: "x"},
 			grid: {	markings: weekendAreas,	backgroundColor: { colors: [ "#fff", "#fff" ] },	borderWidth:1,borderColor:"#f0f0f0",	margin:0,	minBorderMargin:0,labelMargin:20,hoverable: true,mouseActiveRadius:6},
 			legend: { show: false}	};
 			

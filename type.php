@@ -178,21 +178,35 @@ style.display = "none";
 
 </select>
 
-
-	<div id="i_vale4"><p>Условие</p><div class="radio radio-success">
+ <div id="i_chart" style="display: none"><p>Тип Графика</p>
+ 	<div class="radio radio-success">
+	
+                        <input id="mradio0" type="radio" name="tchart" value="0">
+                        <label for="mradio0">Линейный</label>
+						
+                        <input id="mradio1" type="radio" name="tchart" value="1">
+                        <label for="mradio1">Бары</label><br>
+    </div>
+ 
+ </div>
+ 
+ 
+	<div id="i_vale4"><p>Условие</p>
+	<div class="radio radio-success">
 	
                         <input id="radio0" type="radio" name="regim" value="0">
                         <label for="radio0"><> RS-485 (прием - отправка)</label><br>
 						
                         <input id="radio1" type="radio" name="regim" value="1">
-                        <label for="radio1">< RS-485 (только прием)</label><br>
+                        <label for="radio1">> RS-485 (только прием)</label><br>
 						
 						<input id="radio3" type="radio" name="regim" value="3">
                         <label for="radio3">< RS-485 (только отправка)</label><br>
 						
 						<input id="radio2" type="radio" name="regim" value="2">
                         <label for="radio2">Основной модуль</label>
-                      </div></div> 
+                      </div>
+					  </div> 
 
 
 
@@ -235,6 +249,9 @@ style.display = "none";
     <input type="text" id="symbol" name="symbol" maxlength="4" value="" />
 </div>
 </div>
+	
+  
+	
 	
  <div id="i_parm1" style="display: none"><p>Параметр 1</p><input id="namevalue1" name="namevalue1" type="text" class="form-control" maxlength="20" placeholder="Наименование 1"></div>
  <div id="i_parm2" style="display: none"><p>Параметр 2</p><input id="namevalue2" name="namevalue2" type="text" class="form-control" maxlength="20" placeholder="Наименование 2"></div>	
@@ -336,7 +353,7 @@ $r = $_PAGING->get_page( 'SELECT * FROM type  ORDER BY id DESC' );
              <thead>
                 <tr>
 					 <th width="20"></th>
-					 
+					 <th width="20"></th>
                		 <th width="60">  <div class="checkbox check-default"><input id="checkbox10" type="checkbox" value="1" class="checkall"><label for="checkbox10"></label></div></th>
 					<th>Наименование</th>				 	
 					<th width="50">Тип</th>
@@ -361,7 +378,15 @@ while($row = $r->fetch_assoc())
 
    <tr>
 		<td><a href="javascript:void(0)," onclick="getText<?php echo $row['id'];?>()"><i class="<?php	echo $row['ico']; ?> text-success" style="color: <?php	echo $row['color']; ?> !important;"></i></a></td>
-		
+	
+	<td><a href="javascript:void(0)," onclick="getText<?php echo $row['id'];?>()">
+	<?php if($row['tchart']==0){echo "<i class='icon-line' style='color:#ccc;'></i>";}?>
+	<?php if($row['tchart']==1){echo "<i class='icon-barchart' style='color:#ccc;'></i>";}?>
+
+	</a></td>
+
+ 
+	
 		<td> <div class="checkbox check-default"><input id="checkbox<?php	echo $row['id']; ?>" type="checkbox"  name='box[]' value=<?php	echo $row['id']; ?>><label for="checkbox<?php	echo $row['id']; ?>"></label></div></td>
 <td> <a href="javascript:void(0)," onclick="getText<?php echo $row['id'];?>()"><span style="color: #2271D8;"><?php	echo $row['name']; ?><br></span></a> </td>	
 	<td><a href="javascript:void(0)," onclick="getText<?php echo $row['id'];?>()"><?php	echo $row['mode']; ?></a></td>
@@ -395,6 +420,7 @@ function getText<?php echo $row['id'];?>(el){
 	document.getElementById('symbol').value = '<?php	echo $row['symbol']; ?>';
 	document.getElementById('icoclass').className  = '<?php	echo $row['ico']; ?>';
 	document.getElementById("radio<?php	echo $row['regim']; ?>").checked = true; 
+	document.getElementById("mradio<?php	echo $row['tchart']; ?>").checked = true; 
 	$('#type').val('<?php	echo $row['type']; ?>').change();
 	document.getElementById('namevalue1').value = '<?php	echo $row['namevalue1']; ?>';
 	document.getElementById('namevalue2').value = '<?php	echo $row['namevalue2']; ?>';
@@ -439,7 +465,7 @@ document.getElementById('i_parm1').style.display="none";
 document.getElementById('i_parm2').style.display="none";
 document.getElementById('i_parm3').style.display="none";
 document.getElementById('i_parm4').style.display="none";
-
+document.getElementById('i_chart').style.display="none";
 	
 	}
 	
@@ -451,7 +477,7 @@ document.getElementById('i_parm1').style.display="block";
 document.getElementById('i_parm2').style.display="none";
 document.getElementById('i_parm3').style.display="none";
 document.getElementById('i_parm4').style.display="none";
-
+document.getElementById('i_chart').style.display="block";
 	
 	}
 	
@@ -463,6 +489,7 @@ document.getElementById('i_parm1').style.display="block";
 document.getElementById('i_parm2').style.display="block";
 document.getElementById('i_parm3').style.display="none";
 document.getElementById('i_parm4').style.display="none";
+document.getElementById('i_chart').style.display="none";
 	}		
 		 if(val_i_page==3)
  {
@@ -472,6 +499,7 @@ document.getElementById('i_parm1').style.display="block";
 document.getElementById('i_parm2').style.display="block";
 document.getElementById('i_parm3').style.display="block";
 document.getElementById('i_parm4').style.display="none";
+document.getElementById('i_chart').style.display="none";
 	}	
 if(val_i_page==4)
  {
@@ -481,6 +509,7 @@ document.getElementById('i_parm1').style.display="none";
 document.getElementById('i_parm2').style.display="none";
 document.getElementById('i_parm3').style.display="none";
 document.getElementById('i_parm4').style.display="none";
+document.getElementById('i_chart').style.display="none";
 	}
 		}
 	</script>	
@@ -528,6 +557,7 @@ $namevalue2 = $_POST['namevalue2'];
 $namevalue3 = $_POST['namevalue3'];
 $namevalue4 = $_POST['namevalue4'];
 $regim = $_POST['regim'];
+$tchart = $_POST['tchart'];
 $colorss = $_POST['icocolor'];
 
  if($type == '1') {  $namevalue2='';  $namevalue3=''; };
@@ -535,7 +565,7 @@ $colorss = $_POST['icocolor'];
  if($type == '3') {  $namevalue4=''; };
  if($type == '4') {  $namevalue1=''; $namevalue2='';  $namevalue3=''; $namevalue4=''; };
 
-mysqli_query($con,"INSERT INTO type (name,type,ico,mode,symbol,namevalue1,namevalue2,namevalue3,namevalue4,regim,color) VALUES ('$name','$type','$ico','$mode','$symbol','$namevalue1','$namevalue2','$namevalue3','$namevalue4','$regim','$colorss')");
+mysqli_query($con,"INSERT INTO type (name,type,ico,mode,symbol,namevalue1,namevalue2,namevalue3,namevalue4,regim,tchart,color) VALUES ('$name','$type','$ico','$mode','$symbol','$namevalue1','$namevalue2','$namevalue3','$namevalue4','$regim','$tchart','$colorss')");
 echo "Запись добавлена";
 echo "<SCRIPT> window.location.reload();</SCRIPT>";
 }
@@ -556,13 +586,14 @@ $namevalue2 = $_POST['namevalue2'];
 $namevalue3 = $_POST['namevalue3'];
 $namevalue4 = $_POST['namevalue4'];
 $regim = $_POST['regim'];
+$tchart = $_POST['tchart'];
 $colorss = $_POST['icocolor'];
  if($type == '1') {  $namevalue2='';  $namevalue3=''; };
  if($type == '2') {  $namevalue3=''; $namevalue4=''; };
  if($type == '3') {  $namevalue4=''; };
  if($type == '4') {  $namevalue1=''; $namevalue2='';  $namevalue3=''; $namevalue4=''; };
 
-mysqli_query($con,"UPDATE type SET name='$name',type='$type',ico='$ico',mode='$mode',symbol='$symbol',namevalue1='$namevalue1',namevalue2='$namevalue2',namevalue3='$namevalue3',namevalue4='$namevalue4',regim='$regim',color='$colorss'  WHERE id = '$id'");
+mysqli_query($con,"UPDATE type SET name='$name',type='$type',ico='$ico',mode='$mode',symbol='$symbol',namevalue1='$namevalue1',namevalue2='$namevalue2',namevalue3='$namevalue3',namevalue4='$namevalue4',regim='$regim',tchart='$tchart',color='$colorss'  WHERE id = '$id'");
 echo "Запись изменена";
 echo "<SCRIPT> window.location.reload();</SCRIPT>";
 }

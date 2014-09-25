@@ -50,6 +50,11 @@
 	<script charset="utf-8" src="js/ru_Ru.js"></script>
 
 
+<script language="javascript" type="text/javascript" src="js/jquery.flot.js"></script>
+<script language="javascript" type="text/javascript" src="js/jquery.flot.time.js"></script>
+<script language="javascript" type="text/javascript" src="js/jquery.flot.selection.js"></script>
+<script language="JavaScript" type="text/javascript" src="js/curvedLines.js"></script>
+
  <script>
         $(document).ready(function() { $(".select2").select2(); });
 $.datepicker.regional['ru'] = {
@@ -342,7 +347,116 @@ while($row = $r->fetch_assoc())
 								
 								
 								
-							 </div>							
+							 </div>		
+
+
+
+			   <?php
+$res9 = mysqli_query($con,"SELECT * FROM `developments` WHERE mode = 'PIR' ORDER BY `unixtime` DESC LIMIT 1"); 
+if($res9){ 	while($row9 = mysqli_fetch_assoc($res9)){
+//echo $row9['unixtime']."<br>";
+$umax=$row9['unixtime'];
+echo $umax."<br>";
+
+}}
+?>
+
+			   <?php
+$res9 = mysqli_query($con,"SELECT * FROM `developments` WHERE mode = 'PIR' ORDER BY `unixtime` ASC LIMIT 1"); 
+if($res9){ 	while($row9 = mysqli_fetch_assoc($res9)){
+//echo $row9['unixtime']."<br>";
+$umin=$row9['unixtime'];
+//echo $umin."<br>";
+
+}}
+?>
+
+
+		
+		<script type="text/javascript">
+
+	$(function() {
+
+		var d = [
+
+		
+				   <?php
+$res9 = mysqli_query($con,"SELECT * FROM `developments` WHERE mode = 'PIR'"); 
+if($res9){ 	while($row9 = mysqli_fetch_assoc($res9)){
+//echo $row9['unixtime']."<br>";
+$utime7=$row9['unixtime'];
+$utime7=$utime7."000";
+echo "[".$utime7.",1],";
+
+}}
+?>	
+		];
+	
+
+
+
+
+		function weekendAreas(axes) {
+
+			var markings = [],
+			d = new Date(axes.xaxis.min);
+			d.setUTCDate(d.getUTCDate() - ((d.getUTCDay() + 1) % 7))
+			d.setUTCSeconds(0);
+			d.setUTCMinutes(0);
+			d.setUTCHours(0);
+
+			var i = d.getTime();
+			do {
+				markings.push({ xaxis: { from: i, to: i + 2 * 24 * 60 * 60 * 1000 } });
+				i += 7 * 24 * 60 * 60 * 1000;
+			} while (i < axes.xaxis.max);
+
+			return markings;
+		}
+
+		var options = {
+
+		bars: {show: true, align: "center", barWidth: 0.2,},
+			xaxis: {
+			
+				mode: "time",
+				tickLength: 5
+			},
+	legend: {
+				
+				show: false
+			},
+			yaxis: {
+			show: false,
+				min: 0,
+				max: 1.5
+			},
+			grid:   {markings: weekendAreas, backgroundColor: { colors: [ "#fff", "#fff" ] },borderWidth:1,borderColor:"#f0f0f0",margin:0,minBorderMargin:0, labelMargin:20,hoverable: true}
+	
+		};
+
+		var plot = $.plot("#placeholders", [d], options);
+
+
+	});
+
+	</script>
+
+
+
+
+
+		<div class="demo-container">
+			<div id="placeholders" class="demo-placeholder"  style="width: 1500px;height: 200px;"></div>
+		</div>
+
+
+
+
+
+
+
+							 
 							 </div>							
 							</div>
 							</div>	
