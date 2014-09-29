@@ -49,8 +49,8 @@ if (isset($_GET['exit'])) $auth->exit_user();
 if ($auth->check()) header("Location: pu.php");
 else {	if (isset($error)) $r.=' <div class="row form-row m-l-20 m-r-20 xs-m-l-10 xs-m-r-10">'.$error.' ';
 	$r.='	   <div class="row form-row m-l-20 m-r-20 xs-m-l-10 xs-m-r-10">
-                      <div class="col-md-6 col-sm-6 "><input type="text" name="login" placeholder="Пользователь" class="form-control" value="'.@$_POST['login'].'" /></div>
-                      <div class="col-md-6 col-sm-6"><input type="password" placeholder="Пароль"  class="form-control" name="passwd" id="" /></div>
+                      <div class="col-md-6 col-sm-6 "><input type="text" name="login" placeholder="Пользователь" class="form-control"  value="admin" /></div>
+                      <div class="col-md-6 col-sm-6"><input type="password" placeholder="Пароль"  class="form-control" name="passwd" value="admin" id="" /></div>
 					  <br> <br><button class="btn btn-primary btn-cons btn-sm btn-small  btn-success pull-right" style="padding: 8px 12px;" id="login_toggle"  type="submit" value="send" name="send"><i class="icon-enter" ></i></button></div>
 	';}	print $r;
 ?>

@@ -164,7 +164,12 @@ $typechartp= mysqli_query($con, "SELECT * FROM type WHERE mode='$modes'"); $type
 	
    	<script type="text/javascript">
 
-	
+	function checknull(i) {
+var i;
+if (i<10) 
+i = "0"+i;
+return i;
+}
 	
 	
 	 
@@ -179,10 +184,25 @@ $.fn.UseTooltip = function () {
                 $("#tooltip").remove();
                  
                 var x = item.datapoint[0];
-                var y = item.datapoint[1];                
+                var y = item.datapoint[1];     
+				
+var a = new Date(x-<?php echo $timezone*1000;?>);		
+
+var day=a.getDate();
+var month=a.getMonth() + 1;
+var year=a.getFullYear(); 
+var DayofWeek;
+var UTCDay=a.getDay() + 1;
+if(UTCDay==1) DayofWeek = "Воскресенье";
+if(UTCDay==2) DayofWeek = "Понедельник";
+if(UTCDay==3) DayofWeek = "Вторник";
+if(UTCDay==4) DayofWeek = "Среда";
+if(UTCDay==5) DayofWeek = "Четверг";
+if(UTCDay==6) DayofWeek = "Пятница";
+if(UTCDay==7) DayofWeek = "Суббота";
                  
                 showTooltip(item.pageX, item.pageY,
-                 "<div  style='color:<?php	echo $colorrows; ?>;'><i class='<?php	echo $icorows; ?>'></i> "+"<?php echo $moderows; ?>" + " <strong>" + y.toFixed(0) + " <?php echo $symbolrows; ?>" + "</strong></div>");
+                 "<div  style='color:<?php	echo $colorrows; ?>;'><i class='<?php	echo $icorows; ?>'></i> "+item.series.label  +  " <strong>" + y.toFixed(1) + " <?php echo $symbolrows; ?>" + "</strong><br>"+" "+ year +"-"+ checknull(month) +"-"+checknull(day)+" / "+checknull(a.getHours()) + ":" + checknull(a.getMinutes()) + ":" + checknull(a.getSeconds())+"<br>"+DayofWeek+"</div>");
             }
         }
         else {
@@ -196,8 +216,11 @@ function showTooltip(x, y, contents) {
     $('<div id="tooltip">' + contents + '</div>').css({
         position: 'absolute',
         display: 'none',
-        top: y + 5,
-        left: x + 20,
+        top: y + 15,
+        left: x - 120,
+		padding: "2px",
+		"background-color": "rgba(255, 238, 238, 0.49)"
+
     }).appendTo("body").fadeIn(200);
 }
 	
@@ -221,7 +244,8 @@ $utime7=$row9['unixtime'];
 $vale79=$row9['vale1'];
 
 if($per==0){$per=$vale79;}
-else {$per=$per*0.95+$vale79*0.05;}
+else {$per=$per*0.9+$vale79*0.1;}
+
 
 $utime7=$utime7."000";
 echo "[".$utime7.",".$per."],";
@@ -245,42 +269,53 @@ echo "[".$utime7.",".$per."],";
 
 			var i = d.getTime();
 			do {
-				markings.push({ xaxis: { from: i, to: i + 2 * 24 * 60 * 60 * 1000 } });
-				i += 7 * 24 * 60 * 60 * 1000;
+				markings.push({ xaxis: { from: i, to: i + 2 * 24 *  60 * 1000 } });
+				i += 7 * 24 * 60 * 60 *  1000;
 			} while (i < axes.xaxis.max);
 
 			return markings;
 		}
 
+		$.plot("#placeholders", [
+			{ label: " <?php echo $moderows; ?>", data: d }
 		
+		], {
+	
+<?php if($typecharts==1) {	echo "points: { show: true ,radius: 3},	bars: {show: true, align: 'center', barWidth: 0.2},"; } ?>
+	
 
-		
-		
-		var options = {
-<?php if($typecharts==0) {	echo "series: {lines: {show: true}  },"; } ?>
-<?php if($typecharts==1) {	echo "bars: {show: true, align: 'center', barWidth: 0.2,},"; } ?>
-
-			xaxis: {
+	
+				xaxis: {
 			
 				mode: "time",
-				tickLength: 5
+				
 			},
 
 	legend: {
-				
-				show: true
+			backgroundOpacity: 0.1,
+			 margin: -10,
+			show: true
 			},
 			yaxis: {
 		
 		
 			},
-			grid:   {markings: weekendAreas, backgroundColor: { colors: [ "#fff", "#fff" ] },borderWidth:1,borderColor:"#f0f0f0",margin:0,minBorderMargin:0, labelMargin:20,hoverable: true, mouseActiveRadius: 10, clickable: true}
+			grid:   {
+			markings: weekendAreas, 
+			backgroundColor: { colors: [ "#fff", "#fff" ] },
+			borderWidth:1,
+			borderColor:"#f0f0f0",
+			margin:1,
+			minBorderMargin:0, 
+			hoverable: true, 
+			clickable: true
+			}
 	
-		};
-
-		var plot = $.plot("#placeholders", [d], options);
+		});
 		
     $("#placeholders").UseTooltip();
+	
+
 
 	});
 	
@@ -296,6 +331,14 @@ echo "[".$utime7.",".$per."],";
 
 		<div  style="position:relative; background-color: #ffffff;">	
 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
  
  
  <?php

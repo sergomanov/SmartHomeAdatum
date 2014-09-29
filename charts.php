@@ -2,7 +2,6 @@
 <html>
 <head>
 <?php	
-
  include 's-head.php';
  include 's-lib.php'; 
  include 'autt.php';
@@ -286,7 +285,6 @@ var d=new Date();
 var day=d.getDate();
 var month=d.getMonth() + 1;
 var months=d.getMonth() ;
-
 var year=d.getFullYear();
 var m = new Date();
 
@@ -348,7 +346,10 @@ var m = new Date();
 									<div class="clearfix"></div>
 								</div>
 								
-			
+	
+
+
+	
 <?php 
 		if(isset($_GET['mode'])) {	$mode=$_GET['mode']; }
 		if(isset($_GET['datein'])) {	$datein=$_GET['datein']; }
@@ -364,18 +365,24 @@ var m = new Date();
 	//	echo $timereal."<br>";
 	//	echo $datetimein."<br>";
 	//	echo $datetimeout."<br>";
-		
+
+$modedat= mysqli_query($con, "SELECT * FROM type WHERE mode='$mode'"); $moderow=mysqli_fetch_array($modedat); $moderows = $moderow['name'];  $icorows = $moderow['ico']; $colorrows = $moderow['color']; $symbolrows = $moderow['symbol'];	
 		
 $typechartp= mysqli_query($con, "SELECT * FROM type WHERE mode='$mode'"); $typechart=mysqli_fetch_array($typechartp); $typecharts = $typechart['tchart'];  
-
 	
 ?>
 
-		
-	<script type="text/javascript">
-	
-	
+ 	<script type="text/javascript">
 
+	function checknull(i) {
+var i;
+if (i<10) 
+i = "0"+i;
+return i;
+}
+	
+	
+	 
 $.fn.UseTooltip = function () {
     var previousPoint = null;
      
@@ -387,10 +394,25 @@ $.fn.UseTooltip = function () {
                 $("#tooltip").remove();
                  
                 var x = item.datapoint[0];
-                var y = item.datapoint[1];                
+                var y = item.datapoint[1];     
+				
+var a = new Date(x-<?php echo $timezone*1000;?>);		
+
+var day=a.getDate();
+var month=a.getMonth() + 1;
+var year=a.getFullYear(); 
+var DayofWeek;
+var UTCDay=a.getDay() + 1;
+if(UTCDay==1) DayofWeek = "Воскресенье";
+if(UTCDay==2) DayofWeek = "Понедельник";
+if(UTCDay==3) DayofWeek = "Вторник";
+if(UTCDay==4) DayofWeek = "Среда";
+if(UTCDay==5) DayofWeek = "Четверг";
+if(UTCDay==6) DayofWeek = "Пятница";
+if(UTCDay==7) DayofWeek = "Суббота";
                  
                 showTooltip(item.pageX, item.pageY,
-                 "<div >"+"" + " <strong>" + y.toFixed(0) + " " +  "</strong></div>");
+                 "<div  style='color:<?php	echo $colorrows; ?>;'><i class='<?php	echo $icorows; ?>'></i> "+item.series.label  +  " <strong><br>" + "<?php echo $moderows; ?>"+" "+ y.toFixed(1) + " <?php echo $symbolrows; ?>" + "</strong><br>"+" "+ year +"-"+ checknull(month) +"-"+checknull(day)+" / "+checknull(a.getHours()) + ":" + checknull(a.getMinutes()) + ":" + checknull(a.getSeconds())+"<br>"+DayofWeek+"</div>");
             }
         }
         else {
@@ -404,88 +426,143 @@ function showTooltip(x, y, contents) {
     $('<div id="tooltip">' + contents + '</div>').css({
         position: 'absolute',
         display: 'none',
-        top: y + 5,
-        left: x + 20,
-       
-        padding: '6px',     
-        size: '12',   
-       
-        opacity: 0.80
+        top: y + 15,
+        left: x - 120,
+		"background-color": "rgba(255, 238, 238, 0.49)",
+		padding: "2px",
+		
     }).appendTo("body").fadeIn(200);
 }
 	
 	
 	
-	
-	
 	$(function() {
-
-		
+	
+	
 			<?php 	
 
 	
-		foreach ($address as $weekdaysb)   {  $weekdaysa="'".$weekdaysb."',";  $weekdaysc .= $weekdaysa;  } $address = substr($weekdaysc, 0, strlen($weekdaysc)-1); 
+	foreach ($address as $weekdaysb)   {  $weekdaysa="'".$weekdaysb."',";  $weekdaysc .= $weekdaysa;  } $address = substr($weekdaysc, 0, strlen($weekdaysc)-1); 
 		
 		$reschart = mysqli_query($con,"SELECT * FROM `namedev` WHERE address IN ($address)");	if($reschart) {   while($rowchart = mysqli_fetch_assoc($reschart)) 	 {
 		$address=$rowchart['address'];
 		$namess=$rowchart['name'];
-		$commandsa="d".$rowchart['id'].",";  
+		$commandsa='{ label: "'.$namess." - ".$address.'", data:  d'.$rowchart['id']." },";  
+		
+		
 		$commandsc .= $commandsa;  
 	
 
 
-		?>		
+		?>	
+	
+	
+	
+	
+	
+	
+
+		var d<?php echo $rowchart['id'];?> = [
+
 		
-		
-var d<?php echo $rowchart['id'];?> = [	
-<?php 	
+				   <?php
 $per=0;
-$res8 = mysqli_query($con,"SELECT * FROM `developments` WHERE address ='$address' AND mode='$mode' AND unixtime >='$datetimein' AND unixtime <='$datetimeout' ");
-	   if($res8) {   while($row8 = mysqli_fetch_assoc($res8)) 	 {
 
-if($per==0){$per=$row8['vale1'];}
-else {$per=$per*0.96+$row8['vale1']*0.04;}
+$res9 = mysqli_query($con,"SELECT * FROM `developments` WHERE mode = '$mode' AND address = '$address'  AND unixtime >='$datetimein' AND unixtime <='$datetimeout' "); 
+if($res9){ 	while($row9 = mysqli_fetch_assoc($res9)){
 
-	   ?>		
+
+$utime7=$row9['unixtime'];
+
+
+
+$vale79=$row9['vale1'];
+
+if($per==0){$per=$vale79;}
+else {$per=$per*0.9+$vale79*0.1;}
+
+
+$utime7=$utime7."000";
+echo "[".$utime7.",".$per."],";
+
+}}
+?>	
+		];
 	
-	[<?php echo $row8['unixtime']."000";?>, <?php echo $per;?>],
-	
-	<?php	 }}	?>		];
-			
-		<?php	 }}				$commands = substr($commandsc, 0, strlen($commandsc)-1); 		?>	
-			
+	<?php	 }}		$commands = substr($commandsc, 0, strlen($commandsc)-1);	?>	
+
+
+
 		function weekendAreas(axes) {
-			var markings = [],	d = new Date(axes.xaxis.min);
+
+			var markings = [],
+			d = new Date(axes.xaxis.min);
 			d.setUTCDate(d.getUTCDate() - ((d.getUTCDay() + 1) % 7))
-			d.setUTCSeconds(0);		d.setUTCMinutes(0);		d.setUTCHours(0);		var i = d.getTime();
-			do {markings.push({ xaxis: { from: i, to: i + 2 * 24 * 60 * 60 * 1000 } });	i += 7 * 24 * 60 * 60 * 1000;} while (i < axes.xaxis.max);	return markings;}
+			d.setUTCSeconds(0);
+			d.setUTCMinutes(0);
+			d.setUTCHours(0);
 
-		var options = {
-		<?php if($typecharts==0) {	echo "series: {lines: {show: true}  },"; } ?>
-<?php if($typecharts==1) {	echo "bars: {show: true, align: 'center', barWidth: 0.2,},"; } ?>
+			var i = d.getTime();
+			do {
+				markings.push({ xaxis: { from: i, to: i + 2 * 24 *  60 * 1000 } });
+				i += 7 * 24 * 60 * 60 *  1000;
+			} while (i < axes.xaxis.max);
 
-		//	series: {lines: {show: true}  }, 	
-		label: "sin(x)",
-		    xaxis: {mode: "time",tickLength: 5},
-			selection: {mode: "x"},
-			grid: {	markings: weekendAreas,	backgroundColor: { colors: [ "#fff", "#fff" ] },	borderWidth:1,borderColor:"#f0f0f0",	margin:0,	minBorderMargin:0,labelMargin:20,hoverable: true,mouseActiveRadius:6},
-			legend: { show: true}	};
+			return markings;
+		}
+
+		$.plot("#placeholders", [
+			<?php echo $commands;?>
+
+		], {
+	
+<?php if($typecharts==1) {	echo "points: { show: true ,radius: 4 },	bars: {show: true, align: 'center', barWidth: 0.2},"; } ?>
+	
+
+	
+				xaxis: {
 			
+				mode: "time",
+				
+			},
 
+	legend: {
+			backgroundOpacity: 0.1,
+			 margin: -10,
+			show: true
+			},
+			yaxis: {
+		
+		
+			},
+			grid:   {
+			markings: weekendAreas, 
+			backgroundColor: { colors: [ "#fff", "#fff" ] },
+			borderWidth:1,
+			borderColor:"#f0f0f0",
+			margin:1,
+			minBorderMargin:0, 
+			hoverable: true, 
+			clickable: true
+			}
+	
+		});
+		
+    $("#placeholders").UseTooltip();
+	
 
-		$.plot("#placeholder", [ <?php echo $commands;?> ],options);
-
-  $("#placeholder").UseTooltip();
 
 	});
-
+	
 	</script>
+
+
 
 
 
 				
 			
-           <div id="placeholder" style="width: 100%;	height: 450px;"></div>
+           <div id="placeholders" style="width: 100%;	height: 450px;"></div>
 
 			
 

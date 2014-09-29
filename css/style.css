@@ -6064,14 +6064,14 @@ code:hover {
 .the-icons i {
   color: #505458;
   width: 32px;
-  font-size: 14px;
+  font-size: 10px;
   display: inline-block;
   text-align: right;
   margin-right: 10px;
 }
 .the-icons a {
   color: #505458;
-  font-size: 14px;
+  font-size: 10px;
   cursor: pointer;
   display: block;
   height: 32px;
@@ -6729,8 +6729,16 @@ input[type="checkbox"] {
   border: 0px !important;
 }
 .legendLabel {
+  font-size: 12px;
   line-height: 20px !important;
 }
+
+.flot-overlay
+{
+left: 20px  !important; 
+}
+
+
 .rickshaw_legend {
   display: block;
   border-radius: 0px;
