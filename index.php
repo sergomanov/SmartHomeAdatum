@@ -23,11 +23,18 @@
 <div class="container">
   <div class="row login-container animated fadeInUp">  
         <div class="col-md-7 col-md-offset-2 tiles white no-padding">
-		 <div class="p-t-30 p-l-40 p-b-20 xs-p-t-10 xs-p-l-10 xs-p-b-10"> 
-          <h2 class="normal">Авторизация Adatum.ru</h2>
+		 <div class="p-t-30 p-l-40 p-b-20 xs-p-t-10 xs-p-l-10 xs-p-b-10" style="text-shadow: #4B8BA0 0 0 10px;"> 
+          <h2 class="normal">Open platform room automation</h2>
           <p>Добро пожаловать в систему автоматизации и управления помещениями.<br></p>
-          <p class="p-b-20">Войдите чтобы получить доступ к безграничным возможностям системы.</p>
-		  <p class="p-b-20">По умолчанию Пользователь: admin пароль :admin</p>
+           <p>Welcome to the automation and management of premises.</p><br>
+ 
+		  
+		   
+
+
+		  <p >По умолчанию Пользователь: admin пароль :admin</p>
+		  <p> Default user: admin password: admin</p>
+		 
 		<!--  <button type="button" class="btn btn-primary btn-cons" id="login_toggle">Авторизация</button> -->
         </div>
 		<div class="tiles grey p-t-20 p-b-20 text-black">
@@ -44,7 +51,7 @@ else {	if (isset($error)) $r.=' <div class="row form-row m-l-20 m-r-20 xs-m-l-10
 	$r.='	   <div class="row form-row m-l-20 m-r-20 xs-m-l-10 xs-m-r-10">
                       <div class="col-md-6 col-sm-6 "><input type="text" name="login" placeholder="Пользователь" class="form-control" value="'.@$_POST['login'].'" /></div>
                       <div class="col-md-6 col-sm-6"><input type="password" placeholder="Пароль"  class="form-control" name="passwd" id="" /></div>
-					  <br> <br> <br><button class="btn btn-primary btn-cons btn-sm btn-small  btn-success pull-right" id="login_toggle"  type="submit" value="send" name="send"><i class="icon-enter"></i> Вход</button></div>
+					  <br> <br><button class="btn btn-primary btn-cons btn-sm btn-small  btn-success pull-right" style="padding: 8px 12px;" id="login_toggle"  type="submit" value="send" name="send"><i class="icon-enter" ></i></button></div>
 	';}	print $r;
 ?>
 			  </form>

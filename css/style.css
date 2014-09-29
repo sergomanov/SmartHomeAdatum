@@ -1154,7 +1154,7 @@ body.menu-non-fixed .page-sidebar {
 .page-content {
   margin-top: 0px;
   padding: 0px;
-  background-color: #e5e9ec;
+ background-image: url('work.jpg');   background-size:cover;    background-repeat:repeat;    background-position:top;
   overflow: auto;
   position: relative;
   min-height: 911px;
@@ -2817,9 +2817,9 @@ input[type="color"] {
   -webkit-border-radius: 0px;
   -moz-border-radius: 0px;
   border-radius: 0px;
-  -webkit-border-radius: 2px;
-  -moz-border-radius: 2px;
-  border-radius: 2px;
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  border-radius: 8px;
   border: 1px solid #e5e9ec;
   transition: background 0.2s linear 0s, box-shadow 0.2s linear 0s;
 }
@@ -5168,8 +5168,10 @@ color: #FFF;
   top: -5px;
 }
 .tiles.white {
-  background-color: #ffffff;
-  color: #8b91a0;
+  background-color: rgba(255, 255, 255, 0.76);
+  color: #647E2C;
+  border-radius: 16px;
+
 }
 .tiles.white .controller a.remove:hover {
   background-position: -66px -38px;
@@ -7713,8 +7715,6 @@ td.calendar-day, td.calendar-day-np {
 .flot-base{left: 20px !important;}
 
 .flot-text{left: 2px !important;}
-
-
 
 
 

@@ -3,8 +3,11 @@
 function email_send($address,$port,$login,$pwd ,$from ,$to, $subject, $message) { 
  ob_implicit_flush();
  
-include_once "mysql";
- 
+//include_once "mysql";
+ $db_host   = "localhost";
+$db_login  = "root";
+$db_passwd = "111";
+$db_name   = "adatum";
  // подключение к базе mysql
 $con=mysqli_connect($db_host,$db_login,$db_passwd,$db_name);
 if (mysqli_connect_error()) {

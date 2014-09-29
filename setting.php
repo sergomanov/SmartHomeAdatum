@@ -354,7 +354,7 @@ $.timepicker.setDefaults($.timepicker.regional['ru']);
 	$result= mysqli_query($con, "SELECT * FROM data WHERE id='10'");
 	$row=mysqli_fetch_array($result);	if($row){$mailpwd = $row['state'];}
 ?>
-							<input type="text" name="mailpwd" id="mailpwd" class="form-control" value="<?php echo $mailpwd;?>">                               
+							<input type="password" name="mailpwd" id="mailpwd" class="form-control" value="<?php echo $mailpwd;?>">                               
 						</div>
                       </div>
 				  <div class="form-actions">  

@@ -166,18 +166,25 @@ while( Serial.available() && i< 99)
       if ((String)mode == "QA")   //QA,T6DNAE0S,0,0,0,0,QA
       {
   int h = dht.readHumidity(); 
+//  int t = dht.readTemperature();
   dps.getPressure(&Pressure); 
   dps.getTemperature(&Temperature);
       
   digitalWrite(STxC, RS485T); 
   Serial.print("LUM,");   Serial.print(Sname);Serial.print(","); Serial.print(l/10); Serial.println(",0,0,0,LUM");
   delay(100); 
+ //  Serial.print("LUM,");   Serial.print("YTFG56Y5");Serial.print(","); Serial.print(l/9); Serial.println(",0,0,0,LUM");
+ // delay(100); 
   Serial.print("HUM,");   Serial.print(Sname);Serial.print(","); Serial.print(h); Serial.println(",0,0,0,HUM");
   delay(100); 
+ // Serial.print("HUM,");   Serial.print("YTFG56Y5");Serial.print(","); Serial.print(h+random(5, 20)); Serial.println(",0,0,0,HUM");
+ // delay(100); 
   Serial.print("BEEP,");   Serial.print(Sname);Serial.print(","); Serial.print(val/10); Serial.println(",0,0,0,BEEP");
   delay(100); 
   Serial.print("TEM,");   Serial.print(Sname);Serial.print(","); Serial.print(int(Temperature*0.1)); Serial.println(",0,0,0,TEM");
   delay(100); 
+ //  Serial.print("TEM,");   Serial.print("YTFG56Y5");Serial.print(","); Serial.print(t); Serial.println(",0,0,0,TEM");
+ // delay(100); 
   Serial.print("PRS,");   Serial.print(Sname);Serial.print(","); Serial.print(int(Pressure/133.3)); Serial.println(",0,0,0,PRS");
   delay(100);  
   

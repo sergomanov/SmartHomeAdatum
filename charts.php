@@ -182,8 +182,9 @@ $.timepicker.setDefaults($.timepicker.regional['ru']);
 <button type="button" onclick="chText()" class="btn btn-default btn-small btn-cons">Последний час</button>			
 <button type="button" onclick="segText()" class="btn btn-default btn-small btn-cons">Сегодня</button>
 <button type="button" onclick="vchText()" class="btn btn-default btn-small btn-cons">Вчера</button>
-<button type="button" onclick="weText()" class="btn btn-default btn-small btn-cons">Прошлая неделя</button>
-<button type="button" onclick="meText()" class="btn btn-default btn-small btn-cons">Прошлый месяц</button>
+<button type="button" onclick="weText()" class="btn btn-default btn-small btn-cons">Эта неделя</button>
+<button type="button" onclick="meText()" class="btn btn-default btn-small btn-cons">Этот месяц</button>
+<button type="button" onclick="yarText()" class="btn btn-default btn-small btn-cons">Этот год</button>
 
 					<br><br>
 <script type="text/javascript">
@@ -247,19 +248,34 @@ var m = new Date();
 
 function weText(el){
 
-var d=new Date();
-var day=d.getDate();
-var day7=d.getDate();
 
-var month=d.getMonth() + 1;
+ var d=parseInt(new Date().getTime()/1000);
 
-var year=d.getFullYear();
-var m = new Date();
+  var a = new Date((d-604800)*1000);
+ var year = a.getFullYear();
+ var month = a.getMonth();
+ var day = a.getDate();
+ var time = year+'-'+checknull(month+1)+'-'+checknull(day) ;
 
-	document.getElementById('datein').value = year + "-" + checknull(month) + "-" + checknull(day7);
+ 
+
+ 
+ 
+	document.getElementById('datein').value = time;
 	document.getElementById('timein').value = "00:00:00";
+
+
+
+ var a = new Date(d*1000);
+ var year = a.getFullYear();
+ var month = a.getMonth();
+ var day = a.getDate();
+ var time = year+'-'+checknull(month+1)+'-'+checknull(day) ;
+
+
+
 	
-	document.getElementById('dateout').value = year + "-" + checknull(month) + "-" + checknull(day);
+	document.getElementById('dateout').value = time;
 	document.getElementById('timeout').value = "24:59:59";
 
 }
@@ -275,6 +291,26 @@ var year=d.getFullYear();
 var m = new Date();
 
 	document.getElementById('datein').value = year + "-" + checknull(months) + "-" + checknull(day);
+	document.getElementById('timein').value = "00:00:00";
+	
+	document.getElementById('dateout').value = year + "-" + checknull(month) + "-" + checknull(day);
+	document.getElementById('timeout').value = "24:59:59";
+
+}
+
+
+function yarText(el){
+
+var d=new Date();
+var day=d.getDate();
+var month=d.getMonth()+1 ;
+
+
+var year=d.getFullYear();
+var years=d.getFullYear()-1;
+var m = new Date();
+
+	document.getElementById('datein').value = years + "-" + checknull(month) + "-" + checknull(day);
 	document.getElementById('timein').value = "00:00:00";
 	
 	document.getElementById('dateout').value = year + "-" + checknull(month) + "-" + checknull(day);
@@ -313,39 +349,106 @@ var m = new Date();
 								</div>
 								
 			
-  
+<?php 
+		if(isset($_GET['mode'])) {	$mode=$_GET['mode']; }
+		if(isset($_GET['datein'])) {	$datein=$_GET['datein']; }
+		if(isset($_GET['dateout'])) {	$dateout=$_GET['dateout']; }
+		if(isset($_GET['timein'])) {	$timein=$_GET['timein']; }
+		if(isset($_GET['timeout'])) {	$timeout=$_GET['timeout']; }
+		if(isset($_GET['address'])) {	$address=$_GET['address']; }
+		
+		
+	$datetimein=strtotime($_GET['datein'].$_GET['timein']);
+	$datetimeout=strtotime($_GET['dateout'].$_GET['timeout']);
+		
+	//	echo $timereal."<br>";
+	//	echo $datetimein."<br>";
+	//	echo $datetimeout."<br>";
+		
+		
+$typechartp= mysqli_query($con, "SELECT * FROM type WHERE mode='$mode'"); $typechart=mysqli_fetch_array($typechartp); $typecharts = $typechart['tchart'];  
+
+	
+?>
 
 		
 	<script type="text/javascript">
+	
+	
 
+$.fn.UseTooltip = function () {
+    var previousPoint = null;
+     
+    $(this).bind("plothover", function (event, pos, item) {         
+        if (item) {
+            if (previousPoint != item.dataIndex) {
+                previousPoint = item.dataIndex;
+ 
+                $("#tooltip").remove();
+                 
+                var x = item.datapoint[0];
+                var y = item.datapoint[1];                
+                 
+                showTooltip(item.pageX, item.pageY,
+                 "<div >"+"" + " <strong>" + y.toFixed(0) + " " +  "</strong></div>");
+            }
+        }
+        else {
+            $("#tooltip").remove();
+            previousPoint = null;
+        }
+    });
+};
+ 
+function showTooltip(x, y, contents) {
+    $('<div id="tooltip">' + contents + '</div>').css({
+        position: 'absolute',
+        display: 'none',
+        top: y + 5,
+        left: x + 20,
+       
+        padding: '6px',     
+        size: '12',   
+       
+        opacity: 0.80
+    }).appendTo("body").fadeIn(200);
+}
+	
+	
+	
+	
+	
 	$(function() {
-		<?php 	
-		$mode = $_GET['mode'];
-		$datein = $_GET['datein'];
-		$dateout = $_GET['dateout'];
-		
-		$timein = $_GET['timein'];
-		$timeout = $_GET['timeout'];
-		
-		foreach ($_GET['address'] as $weekdaysb)   {  $weekdaysa="'".$weekdaysb."',";  $weekdaysc .= $weekdaysa;  } $address = substr($weekdaysc, 0, strlen($weekdaysc)-1); 
-		
-		$reschart = mysqli_query($con,"SELECT * FROM `namedev` WHERE address IN ($address)");	if($reschart) {   while($rowchart = mysqli_fetch_assoc($reschart)) 	 {	
-		$address=$rowchart['address'];
-		
-	$commandsa="d".$rowchart['id'].",";  
-	$commandsc .= $commandsa;  
-	
-	$datetimein=strtotime($_GET['datein'].$_GET['timein'])+$timezone;
-	$datetimeout=strtotime($_GET['dateout'].$_GET['timeout'])+$timezone;
 
-		?>	
 		
-		
-		
-		
-var d<?php echo $rowchart['id'];?> = [	<?php 	$res8 = mysqli_query($con,"SELECT * FROM `developments` WHERE address ='$address' AND mode='$mode' AND unixtime >='$datetimein' AND unixtime <='$datetimeout' ");	if($res8) {   while($row8 = mysqli_fetch_assoc($res8)) 	 {	?>		
+			<?php 	
+
 	
-	[<?php echo $row8['unixtime']."000";?>, <?php echo $row8['vale1'];?>],
+		foreach ($address as $weekdaysb)   {  $weekdaysa="'".$weekdaysb."',";  $weekdaysc .= $weekdaysa;  } $address = substr($weekdaysc, 0, strlen($weekdaysc)-1); 
+		
+		$reschart = mysqli_query($con,"SELECT * FROM `namedev` WHERE address IN ($address)");	if($reschart) {   while($rowchart = mysqli_fetch_assoc($reschart)) 	 {
+		$address=$rowchart['address'];
+		$namess=$rowchart['name'];
+		$commandsa="d".$rowchart['id'].",";  
+		$commandsc .= $commandsa;  
+	
+
+
+		?>		
+		
+		
+var d<?php echo $rowchart['id'];?> = [	
+<?php 	
+$per=0;
+$res8 = mysqli_query($con,"SELECT * FROM `developments` WHERE address ='$address' AND mode='$mode' AND unixtime >='$datetimein' AND unixtime <='$datetimeout' ");
+	   if($res8) {   while($row8 = mysqli_fetch_assoc($res8)) 	 {
+
+if($per==0){$per=$row8['vale1'];}
+else {$per=$per*0.96+$row8['vale1']*0.04;}
+
+	   ?>		
+	
+	[<?php echo $row8['unixtime']."000";?>, <?php echo $per;?>],
 	
 	<?php	 }}	?>		];
 			
@@ -358,15 +461,21 @@ var d<?php echo $rowchart['id'];?> = [	<?php 	$res8 = mysqli_query($con,"SELECT 
 			do {markings.push({ xaxis: { from: i, to: i + 2 * 24 * 60 * 60 * 1000 } });	i += 7 * 24 * 60 * 60 * 1000;} while (i < axes.xaxis.max);	return markings;}
 
 		var options = {
-			series: {lines: {show: true}  }, 	xaxis: {mode: "time",tickLength: 5},selection: {mode: "x"},
+		<?php if($typecharts==0) {	echo "series: {lines: {show: true}  },"; } ?>
+<?php if($typecharts==1) {	echo "bars: {show: true, align: 'center', barWidth: 0.2,},"; } ?>
+
+		//	series: {lines: {show: true}  }, 	
+		label: "sin(x)",
+		    xaxis: {mode: "time",tickLength: 5},
+			selection: {mode: "x"},
 			grid: {	markings: weekendAreas,	backgroundColor: { colors: [ "#fff", "#fff" ] },	borderWidth:1,borderColor:"#f0f0f0",	margin:0,	minBorderMargin:0,labelMargin:20,hoverable: true,mouseActiveRadius:6},
-			legend: { show: false}	};
+			legend: { show: true}	};
 			
 
 
 		$.plot("#placeholder", [ <?php echo $commands;?> ],options);
-		$("#footer").prepend("Flot " + $.plot.version + " &ndash; ");
 
+  $("#placeholder").UseTooltip();
 
 	});
 

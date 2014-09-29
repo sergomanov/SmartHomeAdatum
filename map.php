@@ -7,6 +7,8 @@
  include 's-head.php';
  include 's-libmon.php'; 
  ?>
+ 
+ 
   
 <link rel="stylesheet" type="text/css" media="all" href="css/googlefont.css" />
 <link rel="stylesheet" type="text/css" media="all" href="css/whhg.css" />
@@ -51,7 +53,7 @@
 <script language="javascript" type="text/javascript" src="js/jquery.flot.time.js"></script>
 <script language="javascript" type="text/javascript" src="js/jquery.flot.selection.js"></script>
 
-
+  
 
 
 <script src="assets/js/widgets.js" type="text/javascript"></script>
@@ -64,13 +66,13 @@
 <script src="js/script.js"></script>
 
 			
- 
+
 			
 			
 			
 </head>
 
-<body class="inner-menu-always-open">
+<body class="inner-menu-always-open" >
 
 <?php	 include 's-tophead.php'; ?>
 <?php	 include 'adatum.class.php' ; ?>
@@ -99,6 +101,10 @@ if(isset($_GET['map'])) {	$maps=$_GET['map']; }
 if(isset($_GET['mode'])) {	$modes=$_GET['mode']; }
 if(isset($_GET['address'])) {	$addresss=$_GET['address']; }
 
+$modedat= mysqli_query($con, "SELECT * FROM type WHERE mode='$modes'"); $moderow=mysqli_fetch_array($modedat); $moderows = $moderow['name'];  $icorows = $moderow['ico']; $colorrows = $moderow['color']; $symbolrows = $moderow['symbol'];
+
+$addressdat= mysqli_query($con, "SELECT * FROM namedev WHERE address='$addresss'"); $rowaddressdat=mysqli_fetch_array($addressdat); $rowaddressdats = $rowaddressdat['name'];  
+
 if(isset($_GET['edit'])){$edit=0;} else {$edit=1;}
 
 $resmen = mysqli_query($con,"SELECT * FROM `scheduler` WHERE type = '10'"); 
@@ -125,36 +131,100 @@ if($resmen){ 	while($rowmen = mysqli_fetch_assoc($resmen)){
  </div>
   <a href="#" class="scrollup">Scroll</a>
 
-  <div class="page-content" style="background-color: #ffffff;"> 
-   <div  class="content">
+  <div class="page-content" style="background: #ffffff;" > 
+   <div  class="content" style="background-color: #ffffff;">
 
-
+ 
+  
    
 
-   <div  style="<?php if(!isset($_GET['mode'])) {	echo "display: none;"; } ?>">
+   <div  style="<?php if(!isset($_GET['mode'])) {	echo "display: none;"; } ?> ;">
     <?php 
 	
 $typechartp= mysqli_query($con, "SELECT * FROM type WHERE mode='$modes'"); $typechart=mysqli_fetch_array($typechartp); $typecharts = $typechart['tchart'];  
 	
-//	echo $typecharts; 
+	
 	
 	?>
+
+
+		
+					
+							
+							
+	
+	
+	
+	
+	
+	
+	
+	
+<a href="map.php?map=<?php echo $maps;?>" style=" position: absolute;  top: 55px;  left: 20px; color:<?php	echo $colorrows; ?>;"><i class="<?php	echo $icorows; ?>"></i> <?php echo $rowaddressdats." [".$addresss."] - "."Датчик ".$moderows." [".$modes."]"."                 [ Свернуть &#9650; ]";  ?> </a>
+	
    	<script type="text/javascript">
 
+	
+	
+	
+	 
+$.fn.UseTooltip = function () {
+    var previousPoint = null;
+     
+    $(this).bind("plothover", function (event, pos, item) {         
+        if (item) {
+            if (previousPoint != item.dataIndex) {
+                previousPoint = item.dataIndex;
+ 
+                $("#tooltip").remove();
+                 
+                var x = item.datapoint[0];
+                var y = item.datapoint[1];                
+                 
+                showTooltip(item.pageX, item.pageY,
+                 "<div  style='color:<?php	echo $colorrows; ?>;'><i class='<?php	echo $icorows; ?>'></i> "+"<?php echo $moderows; ?>" + " <strong>" + y.toFixed(0) + " <?php echo $symbolrows; ?>" + "</strong></div>");
+            }
+        }
+        else {
+            $("#tooltip").remove();
+            previousPoint = null;
+        }
+    });
+};
+ 
+function showTooltip(x, y, contents) {
+    $('<div id="tooltip">' + contents + '</div>').css({
+        position: 'absolute',
+        display: 'none',
+        top: y + 5,
+        left: x + 20,
+    }).appendTo("body").fadeIn(200);
+}
+	
+	
+	
 	$(function() {
 
 		var d = [
 
 		
 				   <?php
-
+$per=0;
 $res9 = mysqli_query($con,"SELECT * FROM `developments` WHERE mode = '$modes' AND address = '$addresss'"); 
 if($res9){ 	while($row9 = mysqli_fetch_assoc($res9)){
-//echo $row9['unixtime']."<br>";
+
+
 $utime7=$row9['unixtime'];
+
+
+
 $vale79=$row9['vale1'];
+
+if($per==0){$per=$vale79;}
+else {$per=$per*0.95+$vale79*0.05;}
+
 $utime7=$utime7."000";
-echo "[".$utime7.",".$vale79."],";
+echo "[".$utime7.",".$per."],";
 
 }}
 ?>	
@@ -182,15 +252,20 @@ echo "[".$utime7.",".$vale79."],";
 			return markings;
 		}
 
+		
+
+		
+		
 		var options = {
 <?php if($typecharts==0) {	echo "series: {lines: {show: true}  },"; } ?>
 <?php if($typecharts==1) {	echo "bars: {show: true, align: 'center', barWidth: 0.2,},"; } ?>
- 
+
 			xaxis: {
 			
 				mode: "time",
 				tickLength: 5
 			},
+
 	legend: {
 				
 				show: true
@@ -199,12 +274,13 @@ echo "[".$utime7.",".$vale79."],";
 		
 		
 			},
-			grid:   {markings: weekendAreas, backgroundColor: { colors: [ "#fff", "#fff" ] },borderWidth:1,borderColor:"#f0f0f0",margin:0,minBorderMargin:0, labelMargin:20,hoverable: true}
+			grid:   {markings: weekendAreas, backgroundColor: { colors: [ "#fff", "#fff" ] },borderWidth:1,borderColor:"#f0f0f0",margin:0,minBorderMargin:0, labelMargin:20,hoverable: true, mouseActiveRadius: 10, clickable: true}
 	
 		};
 
 		var plot = $.plot("#placeholders", [d], options);
-
+		
+    $("#placeholders").UseTooltip();
 
 	});
 	
@@ -218,7 +294,7 @@ echo "[".$utime7.",".$vale79."],";
 
 
 
-		<div  style="position:relative">	
+		<div  style="position:relative; background-color: #ffffff;">	
 
  
  
