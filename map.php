@@ -135,32 +135,40 @@ if($resmen){ 	while($rowmen = mysqli_fetch_assoc($resmen)){
    <div  class="content" style="background-color: #ffffff;">
 
  
-  
-   
 
-   <div  style="<?php if(!isset($_GET['mode'])) {	echo "display: none;"; } ?> ;">
+			
+
+<script> setInterval(function(){$("#mo").load("<?php   echo basename($_SERVER['PHP_SELF']);?>?map=<?php	echo $maps; ?>&mode=<?php	echo $modes; ?>&address=<?php	echo $addresss; ?> #mo"); }, 1000); </script>
+
     <?php 
 	
 $typechartp= mysqli_query($con, "SELECT * FROM type WHERE mode='$modes'"); $typechart=mysqli_fetch_array($typechartp); $typecharts = $typechart['tchart'];  
 	
+		if(isset($_GET['datein'])) {	$datetimein=$_GET['datein']; }
+		if(isset($_GET['dateout'])) {	$datetimeout=$_GET['dateout']; }
+	
+	?>	
 	
 	
-	?>
+   <div  style="<?php if(!isset($_GET['mode'])) {	echo "display: none;"; } ?> ;">
+   
+<div id="mo" >
+	
+<div style=" position: absolute;  top: 80px;  left: 80px; z-index: 999; color:<?php	echo $colorrows; ?>;">
+	
+<a href="map.php?map=<?php echo $maps;?>" ><i class="<?php	echo $icorows; ?>"></i> <?php echo $rowaddressdats." [".$addresss."] - "."Датчик ".$moderows." [".$modes."]"." [&#9650;]";  ?> </a>
+<strong>
 
+<a style="color:#E61090;" href="map.php?map=<?php echo $maps;?>&mode=<?php if(isset($_GET['mode'])) {	echo $_GET['mode']; }?>&address=<?php if(isset($_GET['address'])) {	echo $_GET['address']; }?>&datein=<?php echo $timereal-3600;?>&dateout=<?php echo $timereal;?>" >[ Час ]</a>
 
-		
-					
-							
-							
-	
-	
-	
-	
-	
-	
-	
-	
-<a href="map.php?map=<?php echo $maps;?>" style=" position: absolute;  top: 55px;  left: 20px; color:<?php	echo $colorrows; ?>;"><i class="<?php	echo $icorows; ?>"></i> <?php echo $rowaddressdats." [".$addresss."] - "."Датчик ".$moderows." [".$modes."]"."                 [ Свернуть &#9650; ]";  ?> </a>
+<a href="map.php?map=<?php echo $maps;?>&mode=<?php if(isset($_GET['mode'])) {	echo $_GET['mode']; }?>&address=<?php if(isset($_GET['address'])) {	echo $_GET['address']; }?>&datein=<?php echo $timereal-86400;?>&dateout=<?php echo $timereal;?>" style="color:#10B3E6;">[ День ]</a>
+<a href="map.php?map=<?php echo $maps;?>&mode=<?php if(isset($_GET['mode'])) {	echo $_GET['mode']; }?>&address=<?php if(isset($_GET['address'])) {	echo $_GET['address']; }?>&datein=<?php echo $timereal-2678400;?>&dateout=<?php echo $timereal;?>" style="color:#E67710;">[ Месяц ]</a>
+<a href="map.php?map=<?php echo $maps;?>&mode=<?php if(isset($_GET['mode'])) {	echo $_GET['mode']; }?>&address=<?php if(isset($_GET['address'])) {	echo $_GET['address']; }?>&datein=<?php echo $timereal-32140800;?>&dateout=<?php echo $timereal;?>" style="color:#1019E6;">[ Год ]</a>
+<a href="map.php?map=<?php echo $maps;?>&mode=<?php if(isset($_GET['mode'])) {	echo $_GET['mode']; }?>&address=<?php if(isset($_GET['address'])) {	echo $_GET['address']; }?>" style="color:#1BB633;">[ Последние значения ]</a>
+</strong>
+
+</div>
+</div>	
 	
    	<script type="text/javascript">
 
@@ -233,7 +241,15 @@ function showTooltip(x, y, contents) {
 		
 				   <?php
 $per=0;
-$res9 = mysqli_query($con,"SELECT * FROM `developments` WHERE mode = '$modes' AND address = '$addresss'"); 
+if(!isset($_GET['datein'])) {	
+$res9 = mysqli_query($con,"SELECT * FROM `developments` WHERE mode = '$modes' AND address = '$addresss' ORDER BY id DESC LIMIT 10000"); 
+}
+else
+{
+$res9 = mysqli_query($con,"SELECT * FROM `developments` WHERE mode = '$modes' AND address = '$addresss' AND unixtime >='$datetimein' AND unixtime <='$datetimeout'"); 
+}
+
+
 if($res9){ 	while($row9 = mysqli_fetch_assoc($res9)){
 
 
@@ -294,7 +310,7 @@ echo "[".$utime7.",".$per."],";
 	legend: {
 			backgroundOpacity: 0.1,
 			 margin: -10,
-			show: true
+			show: false
 			},
 			yaxis: {
 		
@@ -321,11 +337,11 @@ echo "[".$utime7.",".$per."],";
 	
 	</script>
 
+
 	<div id="placeholders" class="demo-placeholder"  style="width: 100%;height: 200px;"></div>
-         
+
+
 	</div>	
-
-
 
 
 
@@ -562,12 +578,12 @@ $commands9=$row9['commands'];
   if(isset($_GET['edit']))
 {
   ?>
-  <a href="map.php?map=<?php echo $maps;?>" onclick="send();" style="  position: absolute;  top: 55px;  left: 20px;"><i class="icon-windows"></i> Закончить редактирование </a>	
+  <a href="map.php?map=<?php echo $maps;?>" onclick="send();" style="  position: absolute;  top: 5px;  left: 20px;"><i class="icon-windows"></i> Закончить редактирование </a>	
 
  <?php 
 } else {
   ?>	
-<a href="map.php?map=<?php echo $maps;?>&edit=1" style="  position: absolute;  top: 55px;  left: 20px;"><i class="icon-windows"></i> Редактировать </a>
+<a href="map.php?map=<?php echo $maps;?>&edit=1" style="  position: absolute;  top: 5px;  left: 20px;"><i class="icon-windows"></i> Редактировать </a>
 	 <?php 
 } 
   ?>

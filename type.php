@@ -79,10 +79,11 @@
       list-style: none outside none;
       margin-left: 0;
   }
+  
   .the-icons li {
       float: left;
-      line-height: 25px;
-      width: 25%;
+      line-height: 18px;
+      width: 20%;
   }
   .the-icons i:hover {
       background-color: rgba(255, 0, 0, 0.25);
@@ -90,15 +91,14 @@
   .the-icons i {
 color: #0aa699;
 width: 32px;
-font-size: 24px;
+font-size: 16px;
 display: inline-block;
 text-align: right;
 margin-right: 10px;
 }
 .prokrutka {
-padding-right: 15px;
-padding-left: 15px;
-height:300px; /* высота нашего блока */
+
+height:750px; /* высота нашего блока */
 background: #fff; /* цвет фона, белый */
 margin: 10px;
 overflow: auto; /* свойство для прокрутки по горизонтали. Автоматом, если больше блока */
@@ -118,18 +118,84 @@ margin-left: -10px;
 					<div id="whatever" style="display:none" class="col-md-12 prokrutka">
 							<div class="grid simple" >
 								<div class="grid-body no-border email-body" >
-									<div class="row tiles-container tiles white m-b-20 ">					
-										<ul class="the-icons clearfix">
-										<?php	 include 's-ico.php';  ?>
+									<div  class="row tiles-container tiles white ">	
+<div align="center">									
+									<br>
+										<a onclick="showContent('./css/s-ico1.php')" class="btn btn-sm btn-small btn-primary" href="#">1</a>
+										<a onclick="showContent('./css/s-ico11.php')" class="btn btn-sm btn-small btn-primary" href="#">2</a>
+										<a onclick="showContent('./css/s-ico2.php')" class="btn btn-sm btn-small btn-primary" href="#">3</a>
+										<a onclick="showContent('./css/s-ico22.php')" class="btn btn-sm btn-small btn-primary" href="#">4</a>
+										<a onclick="showContent('./css/s-ico3.php')" class="btn btn-sm btn-small btn-primary" href="#">5</a>
+										<a onclick="showContent('./css/s-ico33.php')" class="btn btn-sm btn-small btn-primary" href="#">6</a>
+										<a onclick="showContent('./css/s-ico4.php')" class="btn btn-sm btn-small btn-primary" href="#">7</a>
+									    <a onclick="showContent('./css/s-ico44.php')" class="btn btn-sm btn-small btn-primary" href="#">8</a>
+										<a onclick="showContent('./css/s-ico5.php')" class="btn btn-sm btn-small btn-primary" href="#">9</a>
+									    <a onclick="showContent('./css/s-ico55.php')" class="btn btn-sm btn-small btn-primary" href="#">10</a>
+										<a onclick="showContent('./css/s-ico6.php')" class="btn btn-sm btn-small btn-primary" href="#">11</a>
+									    <a onclick="showContent('./css/s-ico66.php')" class="btn btn-sm btn-small btn-primary" href="#">12</a>
+										<a onclick="showContent('./css/s-ico7.php')" class="btn btn-sm btn-small btn-primary" href="#">13</a>
+									    <a onclick="showContent('./css/s-ico77.php')" class="btn btn-sm btn-small btn-primary" href="#">14</a>
+										
+										<a onclick="showHide('whatever')" class="btn btn-sm btn-small" href="#">Скрыть &#9650;</a>
+										
+										
+								
+	</div>										
+										<ul class="the-icons clearfix" style="font-size: 10px;">
+											<div id="contentBody">
+				
+											</div>
 										</ul>					
 								 </div>
 							  </div> 
 						  </div> 
 					 </div> 
 				</div> 
+				
+				
+
+	
+
+
+	<div id="loading" style="display: none">
+	Идет загрузка...
+	</div>
 	 
 
-  
+  <script>
+	function showContent(link) {
+
+		var cont = document.getElementById('contentBody');
+		var loading = document.getElementById('loading');
+
+		cont.innerHTML = loading.innerHTML;
+
+		var http = createRequestObject();					// создаем ajax-объект
+		if( http ) {
+			http.open('get', link);							// инициируем загрузку страницы
+			http.onreadystatechange = function () {			// назначаем асинхронный обработчик события
+				if(http.readyState == 4) {
+					cont.innerHTML = http.responseText;		// присваиваем содержимое
+				}
+			}
+			http.send(null);    
+		} else {
+			document.location = link;	// если ajax-объект не удается создать, просто перенаправляем на адрес
+		}
+	}
+
+	// создание ajax объекта
+	function createRequestObject() {
+		try { return new XMLHttpRequest() }
+		catch(e) {
+			try { return new ActiveXObject('Msxml2.XMLHTTP') }
+			catch(e) {
+				try { return new ActiveXObject('Microsoft.XMLHTTP') }
+				catch(e) { return null; }
+			}
+		}
+	}
+</script>
 <script type="text/javascript">
 function showHide (id)
 {
@@ -213,7 +279,7 @@ style.display = "none";
 	<div id="i_all" style="display: none">
 	<p>Иконка </p>
 	<div  class="input-group">
-				  <span onclick="showHide('whatever');" class="input-group-addon primary">				  
+				  <span onclick="showHide('whatever');showContent('./css/s-ico1.php');" class="input-group-addon primary">				  
 				  <span class="arrow"></span>
 					<i id="icoclass" class="icon-dollar"></i>
 				  </span>
